@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- UIkit CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/css/uikit.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- UIkit JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit-icons.min.js"></script>
+	<title>Optical Calculator</title>
+</head>
+<body class="uk-background-primary">
+	<h1 class="uk-heading-line uk-text-center"><span>UI-DBUS Calculator</span></h1>
+	<div style="margin-top: 10vh;">
+		<div class="uk-margin" uk-margin>
+	        <label style="color: black;margin-right: 5px;">Number Of Channels:</label>
+	        <div uk-form-custom="target: true">
+	            
+	            <input id ="NumberOfChannels" class="uk-input uk-form-width-small"  type="number" placeholder="0">
+	        </div>
+	        <label style="color: black;margin-right: 5px;margin-left: 5px;">Starting Frequency:</label>
+	        <div uk-form-custom="target: true">
+	            
+	            <input id ="StartingFrequency" class="uk-input uk-form-width-small"  type="number" placeholder="0">
+	        </div>
+	        <label style="color: black;margin-right: 5px;margin-left: 5px;">Delta Frequency:</label>
+	        <div uk-form-custom="target: true">
+	            
+	            <input id ="DeltaFrequency" class="uk-input uk-form-width-small"  type="number" placeholder="0">
+	        </div>
+	        <button class="uk-button uk-button-secondary" id="submit-button">Submit</button>
+
+    	</div>
+	</div>
+	<div id="element"></div>
+
+</body>
+
+</html>
+
+<style type="text/css">
+	body{
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items:  center;
+	}
+	#element{
+		color: #fff;
+	}
+</style>
+<script type="text/javascript">
+$("#submit-button").on("click",function(){
+	$("#element").empty();
+	var N = $("#NumberOfChannels").val();
+	var start = parseFloat($("#StartingFrequency").val());
+	var delta = parseFloat($("#DeltaFrequency").val()); 
+	var BaseUnit = 4;
+	if(N<10){
+		UIkit.notification({
+   			message: 'N should be greater than equal to 10',
+    		status: 'danger',
+    		pos: 'top-right',
+    		timeout: 3000
+		});
+
+	}else{
+		
+		// console.log(N);
+		
+		
+		var check = true;
+		loop1:while(check){
+				var iterator = 0;
+				var counter = 0;
+				while(true){
+
+					if((BaseUnit - 2*iterator)>0){
+						counter = counter + (BaseUnit - 2*iterator);
+						// console.log("B"+iterator+"="+(BaseUnit - 2*iterator));
+						// console.log(counter);
+						if(counter >= N-1){
+							check = false;
+							break;
+						}else{
+							var k =0;
+							while(k<=iterator){
+								// console.log("F"+k);
+								counter = counter + 1;
+								if(counter >= N-1){
+									check = false;
+									break;
+								}
+								k = k + 1;
+							}
+							if(counter >= N-1){
+								check = false;
+								break;
+							}
+						}
+					}else{
+						BaseUnit = BaseUnit + 1;
+						// console.log("Change this Mofu")
+						continue loop1;
+					}
+
+					iterator = iterator + 1;
+				}
+			}
+				// end1:console.log("end");
+				// console.log(BaseUnit);	
+				counter = 1;
+				iterator = 0;
+
+				freq = 0;
+				while(counter <= N){
+					var string = "<div class='uk-margin uk-card uk-card-secondary'>BaseUnit "+iterator+":<br>";
+					var string2 = "</div>";
+					// string = string + "BU"+iterator+" = ";
+					var k = 0
+					var deltaSum = 0
+					while(k<BaseUnit - 2*iterator){
+						// string = string +" "+ counter+",";
+						deltaSum = deltaSum + start+0;
+						string = string +"\tFrequency\t"+k+"\t:\t"+start+"\tnm <br>";
+						start = start + delta;
+						counter = counter + 1;
+						k = k + 1;
+					}
+					// string = string +"DeltaSum"+ deltaSum/k;
+					var frequency = deltaSum/k;
+					string = string + string2;
+					$("#element").append(string);
+					var string = "<div class='uk-margin uk-card uk-card-default'>";
+					var string2 = "</div>";
+					k = 0;
+
+					if(counter > N-1){
+						break;
+					}
+					if (BaseUnit - 2*iterator == 1){
+						string = string + "Surplus Channel Spacings = ";
+					}else{
+						string = string + "Delta Frequency :<br>";
+					}
+					
+					while(k<=iterator){
+						if(BaseUnit - 2*iterator == 1){
+						string = string + " " + counter;
+						}else{
+						string = string + "Frequency\t" + freq+"\t:\t"+frequency+"<br> ";
+						}
+						freq = freq + 1;
+						frequency = frequency + delta;
+						counter = counter + 1;
+						if(counter >= N){
+							break;
+						}
+						k = k + 1;
+					}
+					string = string + string2;
+
+					$("#element").append(string);
+					if(counter > N-1){
+						break;
+					}
+					iterator = iterator + 1;
+
+				}	
+	}
+
+			
+	
+});
+	
+
+
+</script>
