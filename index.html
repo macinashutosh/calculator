@@ -119,14 +119,19 @@ $("#submit-button").on("click",function(){
 				freq = 0;
 	}
 		console.log(BaseUnit)
-		//funtions to calculate permutations
+
+
+
+
+		//functions to calculate permutations
+			 		var darray = []
 					var swap = function(array, frstElm, scndElm) {
 
 					    var temp = array[frstElm];
 					    array[frstElm] = array[scndElm];
 					    array[scndElm] = temp;
 					}
-					var darray = []
+					
 					
 					var permutation = function(array, leftIndex, size) {
 
@@ -153,6 +158,8 @@ $("#submit-button").on("click",function(){
 					        }
 					    }
 					}
+		
+
 		var d = []
 		d.push(4);
 		// $("#element").append(d[0])
@@ -165,201 +172,100 @@ $("#submit-button").on("click",function(){
 
 		
 		// to assign final array
-				var combination = function(array,BaseUnit,N){
-					// console.log(">>>>>>>>")
-					// console.log(array)
-					var narray = [0]
-					var prevObject = 0;
-					counter = 1;
-					iterator = 0;
-					var arrayIterator = 1;
-					while(counter<=N){
-						
-						var k = 0;
-						while(k<BaseUnit - 2*iterator){
-								value = parseInt(narray[arrayIterator-1])+parseInt(array[k]);
-								// console.log("value:")
-								// console.log(array[k])
-								narray.push(value)
-								arrayIterator++;
-								counter = counter + 1;
-								k = k + 1;
-						}
-						if(counter > N-1){
-								break;
-						}
-						// console.log("hi")
-						k=0
-						freqDelta = delta
-						while(k<=iterator){
-								narray.push(parseInt(freqDelta)+parseInt(narray[arrayIterator-1]));
-								counter = counter + 1;
-								freqDelta++;
-								arrayIterator++;
-								if(counter >= N){
+					var combination = function(array,BaseUnit,N){
+						// console.log(">>>>>>>>")
+						// console.log(array)
+						var narray = [0]
+						var prevObject = 0;
+						counter = 1;
+						iterator = 0;
+						var arrayIterator = 1;
+						while(counter<=N){
+							
+							var k = 0;
+							while(k<BaseUnit - 2*iterator){
+									value = parseInt(narray[arrayIterator-1])+parseInt(array[k]);
+									// console.log("value:")
+									// console.log(array[k])
+									narray.push(value)
+									arrayIterator++;
+									counter = counter + 1;
+									k = k + 1;
+							}
+							if(counter > N-1){
 									break;
-								}
-								k = k + 1;
-								
-						}
-						if(counter > N-1){
-								break;
-						}
-						// console.log("bi")
-						iterator = iterator + 1;
+							}
+							// console.log("hi")
+							k=0
+							freqDelta = delta
+							while(k<=iterator){
+									narray.push(parseInt(freqDelta)+parseInt(narray[arrayIterator-1]));
+									counter = counter + 1;
+									freqDelta++;
+									arrayIterator++;
+									if(counter >= N){
+										break;
+									}
+									k = k + 1;
+									
+							}
+							if(counter > N-1){
+									break;
+							}
+							// console.log("bi")
+							iterator = iterator + 1;
 
+						}
+					// console.log(narray)
+					return narray;
 					}
-				// console.log(narray)
-				return narray;
-				}
+
+
 		permutation(d,0,d.length)
-		answer = combination(darray[0],BaseUnit,N);
-		for (var j=0;j<darray[0].length;j++){
-				$("#element").append(darray[0][j])
-				$("#element").append("\t")
-			}
-			$("#element").append("<br>")
-		for (var j=0;j<answer.length;j++){
-				$("#element").append(answer[j])
-				$("#element").append("\t")
-			}
-			$("#element").append("<br>");
-			$("#element").append("<br>");
-			$("#element").append("<br>");
-		var prevN = 0;
-		var differenceArr = []
-		for(j=0;j<answer.length;j++){
-			var temp1 = []
-			for(var m=0;m<prevN+1;m++){
-				temp1.push(" ")
-				// $("#element").append("-")
-				// $("#element").append("\t")
-			}
-			for(var i=prevN+1;i<answer.length;i++){
-				temp1.push(parseInt(answer[i])-parseInt(answer[prevN]))
-				// $("#element").append(parseInt(answer[i])-parseInt(answer[prevN]))
-				// $("#element").append("\t")
-			}
-			$("#element").append("<br>");
-			differenceArr.push(temp1)
-			prevN++;
-		}
+		
+		var toPrintD = []
+		var toPrintN = []
+		var toPrintNB = 0
+		var toPrintNC = 0
+		var toPrintNT = 0
+		for (var outer=0;outer<darray.length;outer++){
+				for(var inner =0 ;inner<darray[outer].length;inner++){
+					$("#element").append(darray[outer][inner])
+					$("#element").append("\t")
+				}
+					answer = combination(darray[outer],BaseUnit,N);
+					$("#element").append("<br>")
+					for (var j=0;j<answer.length;j++){
+						$("#element").append(answer[j])
+						$("#element").append("\t")
+					}
+					$("#element").append("<br>");
+					var prevN = 0;
+					var differenceArr = []
+					for(j=0;j<answer.length;j++){
+						var temp1 = []
+						for(var m=0;m<prevN+1;m++){
+							temp1.push(" ")
+							// $("#element").append("-")
+							// $("#element").append("\t")
+						}
+						for(var i=prevN+1;i<answer.length;i++){
+							temp1.push(parseInt(answer[i])-parseInt(answer[prevN]))
+							// $("#element").append(parseInt(answer[i])-parseInt(answer[prevN]))
+							// $("#element").append("\t")
+						}
+						differenceArr.push(temp1)
+						prevN++;
+					}
+					var feasible = checkFeasibility(differenceArr);
+					$("#element").append("Nb = \t"+feasible[0]+"\tNc = \t"+feasible[1]+"\tNt = \t"+(parseInt(parseInt(3*feasible[0])+parseInt(2*feasible[1]))));
+					$("#element").append("<br>");
+				}	
+			// }	
+		
 		// console.log("diff")
 		// console.log(differenceArr)
-		var map = {};
-		class Double {
-			constructor(diagonal,row){
-				this.diagonal = diagonal
-				this.row = row
-			}
-			getInfo(){
-				var a = []
-				a.push(this.diagonal)
-				a.push(this.row)
-				return a
-			}
-		}
-		//map["number"] = [Double]
-		for(j=0;j<differenceArr.length;j++){
-			var tempDia = 1
-			for(k=0;k<differenceArr[0].length;k++){
-				if(differenceArr[j][k] == " "){
 
-				}else{
-					if (map.hasOwnProperty(differenceArr[j][k])) {
-						var a = new Double(tempDia,j+1)
-						array = map[differenceArr[j][k]]
-						array.push(a)
-						map[differenceArr[j][k]] = array
-					}else{
-						var a = new Double(tempDia,j+1)
-						var array = []
-						array.push(a)
-						map[differenceArr[j][k]] = array
-					}
-					tempDia++;
-				}
-				
-			}
-		}
-		// console.log("map:")
-		// console.log(map)
-		var Nb = 0
-		var Nc = 0
-		for (var key in map) {
-		    if (map.hasOwnProperty(key)) {
-		    	if(map[key].length > 1){
-		    		//need to include these in the calculation
-		    		// console.log(key + " -> " + map[key].length);
-		    		arr = map[key]
-
-		    		var temp = {}
-		    		var isItCheckedAlready = []
-		    		for (var i =0;i<arr.length;i++){
-		    			info = arr[i].getInfo()
-		    			diagonal = info[0]
-		    			row  = info[1]
-		    			// console.log(key+"-->"+diagonal+","+row)
-		    			if (temp.hasOwnProperty(row)){
-		    				tempArr = temp[row]
-		    				tempArr.push(i)
-		    				temp[row] = tempArr
-		    			}else{
-		    				tempArr = [i]
-		    				temp[row] = tempArr
-		    			}
-		    			
-		    			isItCheckedAlready.push(false)
-		    			// console.log(temp)
-		    		}
-		    		// console.log(temp)
-		    		// console.log(arr.length)
-		    		for (var i = 0;i<arr.length;i++){
-		    			info = arr[i].getInfo()
-		    			diagonal = info[0]
-		    			row  = info[1]
-		    			difference = row - diagonal
-		    			sum = row + diagonal
-		    			if (difference > 0 && temp.hasOwnProperty(difference)){
-		    				isItCheckedAlready[i] = true
-		    				toCheckTrue = temp[difference]
-		    				for(var j=0;j<toCheckTrue.length;j++){
-		    					isItCheckedAlready[toCheckTrue[j]] = true
-		    				}
-		    			}
-		    			if (sum >0 && temp.hasOwnProperty(sum)){
-		    				isItCheckedAlready[i] = true
-		    				toCheckTrue = temp[sum]
-		    				for(var j=0;j<toCheckTrue.length;j++){
-		    					isItCheckedAlready[toCheckTrue[j]] = true
-		    				}
-		    			}
-		    			// console.log(temp)
-		    		}
-
-		    		for(var i=0;i<isItCheckedAlready.length;i++){
-		    			if(isItCheckedAlready[i] == true){
-		    				Nb++;
-		    				// console.log("Nb")
-		    			}else{
-		    				Nc++;
-		    				// console.log("Nc")
-		    			}
-		    		}
-		    		console.log(key+"-> Nb"+Nb+" Nc"+Nc)
-
-		    		
-		    	}else{
-		    		// not required variables
-		    	}
-		        
-		    }
-		}
-		console.log(Nb)
-		console.log(Nc)
-		
-		// var double = new Double(1,1)
-		// console.log(double.getInfo())
 		// for(var i=0;i<darray.length;i++){
 		// 	for (var j=0;j<darray[0].length;j++){
 		// 		$("#element").append(darray[i][j])
@@ -380,7 +286,122 @@ $("#submit-button").on("click",function(){
 		
 	
 });
+
+function checkFeasibility(differenceArr){
+	var map = {};
+	class Double {
+		constructor(diagonal,row){
+			this.diagonal = diagonal
+			this.row = row
+		}
+		getInfo(){
+			var a = []
+			a.push(this.diagonal)
+			a.push(this.row)
+			return a
+		}
+	}
+	//map["number"] = [Double]
+	for(j=0;j<differenceArr.length;j++){
+		var tempDia = 1
+		for(k=0;k<differenceArr[0].length;k++){
+			if(differenceArr[j][k] == " "){
+
+			}else{
+				if (map.hasOwnProperty(differenceArr[j][k])) {
+					var a = new Double(tempDia,j+1)
+					array = map[differenceArr[j][k]]
+					array.push(a)
+					map[differenceArr[j][k]] = array
+				}else{
+					var a = new Double(tempDia,j+1)
+					var array = []
+					array.push(a)
+					map[differenceArr[j][k]] = array
+				}
+				tempDia++;
+			}
+			
+		}
+	}
+	// console.log("map:")
+	// console.log(map)
 	
+	var Nb = 0
+	var Nc = 0
+	for (var key in map) {
+	    if (map.hasOwnProperty(key)) {
+	    	if(map[key].length > 1){
+	    		//need to include these in the calculation
+	    		// console.log(key + " -> " + map[key].length);
+	    		arr = map[key]
+
+	    		var temp = {}
+	    		var isItCheckedAlready = []
+	    		for (var i =0;i<arr.length;i++){
+	    			info = arr[i].getInfo()
+	    			diagonal = info[0]
+	    			row  = info[1]
+	    			// console.log(key+"-->"+diagonal+","+row)
+	    			if (temp.hasOwnProperty(row)){
+	    				tempArr = temp[row]
+	    				tempArr.push(i)
+	    				temp[row] = tempArr
+	    			}else{
+	    				tempArr = [i]
+	    				temp[row] = tempArr
+	    			}
+	    			
+	    			isItCheckedAlready.push(false)
+	    			// console.log(temp)
+	    		}
+	    		// console.log(temp)
+	    		// console.log(arr.length)
+	    		for (var i = 0;i<arr.length;i++){
+	    			info = arr[i].getInfo()
+	    			diagonal = info[0]
+	    			row  = info[1]
+	    			difference = row - diagonal
+	    			sum = row + diagonal
+	    			if (difference > 0 && temp.hasOwnProperty(difference)){
+	    				isItCheckedAlready[i] = true
+	    				toCheckTrue = temp[difference]
+	    				for(var j=0;j<toCheckTrue.length;j++){
+	    					isItCheckedAlready[toCheckTrue[j]] = true
+	    				}
+	    			}
+	    			if (sum >0 && temp.hasOwnProperty(sum)){
+	    				isItCheckedAlready[i] = true
+	    				toCheckTrue = temp[sum]
+	    				for(var j=0;j<toCheckTrue.length;j++){
+	    					isItCheckedAlready[toCheckTrue[j]] = true
+	    				}
+	    			}
+	    			// console.log(temp)
+	    		}
+
+	    		for(var i=0;i<isItCheckedAlready.length;i++){
+	    			if(isItCheckedAlready[i] == true){
+	    				Nb++;
+	    				// console.log("Nb")
+	    			}else{
+	    				Nc++;
+	    				// console.log("Nc")
+	    			}
+	    		}
+	    		// console.log(key+"-> Nb"+Nb+" Nc"+Nc)
+
+	    		
+	    	}else{
+	    		// not required variables
+	    	}
+	        
+	    }
+	}
+	console.log(Nb)
+	console.log(Nc)
+	return [Nb,Nc]
+}
 
 
 </script>
