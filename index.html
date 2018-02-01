@@ -10,7 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit-icons.min.js"></script>
 	<title>Optical Calculator</title>
 </head>
-<body style="height: 100vh;background-color: green;">
+<body style="height: 100vh;width:100vw;background-color: green;">
 	<h1 class="uk-heading-line uk-text-center"><span>UI-DBUS Calculator</span></h1>
 	<div style="margin-top: 10vh;">
 		<div class="uk-margin" uk-margin>
@@ -19,24 +19,19 @@
 	            
 	            <input id ="NumberOfChannels" class="uk-input uk-form-width-small"  type="number" placeholder="0">
 	        </div>
-	        <!-- <label style="color: black;margin-right: 5px;margin-left: 5px;">Starting Frequency:</label>
-	        <div uk-form-custom="target: true">
-	            
-	            <input id ="StartingFrequency" class="uk-input uk-form-width-small"  type="number" placeholder="0">
-	        </div> -->
-	        <label style="color: black;margin-right: 5px;margin-left: 5px;">Frequency Gap:</label>
-	        <div uk-form-custom="target: true">
-	            
-	            <input id ="DeltaFrequency" class="uk-input uk-form-width-small"  type="number" placeholder="0">
-	        </div>
-	        <button class="uk-button uk-button-secondary" id="submit-button">Submit</button>
-
+	        
+	        <button class="uk-button uk-button-secondary" id="submit-button">Add Input</button>
+	        <button class="uk-button uk-button-secondary" id="channel-submit-button" style="display: none">Submit</button>
     	</div>
 	</div>
-	<div id="element" style="height: 80vh;overflow: auto;text-align: right;">
+	<div id="element" style="height: 20vh;overflow: auto;text-align: right;">
 		
 	</div>
-
+	<div id="inputElement" style="height:60vh;display: grid;grid-template-columns: auto auto auto;overflow: auto;grid-row-gap: 10px;" >
+		
+	</div>
+	
+	<!-- <label class="channelLabel" style="display: none">0:</label><input id ="channel" class="uk-input uk-form-width-small"  type="number" placeholder="0"> -->
 </body>
 
 </html>
@@ -52,14 +47,211 @@
 	#element{
 		color: #fff;
 	}
+	.channelLabel{
+		color:#fff;
+		margin-right: 10px;
+	}
 </style>
 <script type="text/javascript">
+//Function Used for calculations
+// var combination = function(array,BaseUnit,N){
+// 	// console.log(">>>>>>>>")
+// 	// console.log(array)
+// 	var narray = [0]
+// 	var prevObject = 0;
+// 	counter = 1;
+// 	iterator = 0;
+// 	var arrayIterator = 1;
+// 	while(counter<=N){
+		
+// 		var k = 0;
+// 		while(k<BaseUnit - 2*iterator){
+// 				value = parseInt(narray[arrayIterator-1])+parseInt(array[k]);
+// 				// console.log("value:")
+// 				// console.log(array[k])
+// 				narray.push(value)
+// 				arrayIterator++;
+// 				counter = counter + 1;
+// 				k = k + 1;
+// 		}
+// 		if(counter > N-1){
+// 				break;
+// 		}
+// 		// console.log("hi")
+// 		k=0
+// 		freqDelta = delta
+// 		while(k<=iterator){
+// 				narray.push(parseInt(freqDelta)+parseInt(narray[arrayIterator-1]));
+// 				counter = counter + 1;
+// 				freqDelta++;
+// 				arrayIterator++;
+// 				if(counter >= N){
+// 					break;
+// 				}
+// 				k = k + 1;
+				
+// 		}
+// 		if(counter > N-1){
+// 				break;
+// 		}
+// 		// console.log("bi")
+// 		iterator = iterator + 1;
+
+// 	}
+// // console.log(narray)
+// return narray;
+// }
+
+// Fasibility Function
+function checkFeasibility(differenceArr){
+var map = {};
+class Double {
+	constructor(diagonal,row){
+		this.diagonal = diagonal
+		this.row = row
+	}
+	getInfo(){
+		var a = []
+		a.push(this.diagonal)
+		a.push(this.row)
+		return a
+	}
+}
+//map["number"] = [Double]
+for(j=0;j<differenceArr.length;j++){
+	var tempDia = 1
+	for(k=0;k<differenceArr[0].length;k++){
+		if(differenceArr[j][k] == " "){
+
+		}else{
+			if (map.hasOwnProperty(differenceArr[j][k])) {
+				var a = new Double(tempDia,j+1)
+				array = map[differenceArr[j][k]]
+				array.push(a)
+				map[differenceArr[j][k]] = array
+			}else{
+				var a = new Double(tempDia,j+1)
+				var array = []
+				array.push(a)
+				map[differenceArr[j][k]] = array
+			}
+			tempDia++;
+		}
+		
+	}
+}
+// console.log("map:")
+// console.log(map)
+
+var Nb = 0
+var Nc = 0
+for (var key in map) {
+    if (map.hasOwnProperty(key)) {
+    	if(map[key].length > 1){
+    		//need to include these in the calculation
+    		// console.log(key + " -> " + map[key].length);
+    		arr = map[key]
+
+    		var temp = {}
+    		var isItCheckedAlready = []
+    		for (var i =0;i<arr.length;i++){
+    			info = arr[i].getInfo()
+    			diagonal = info[0]
+    			row  = info[1]
+    			// console.log(key+"-->"+diagonal+","+row)
+    			if (temp.hasOwnProperty(row)){
+    				tempArr = temp[row]
+    				tempArr.push(i)
+    				temp[row] = tempArr
+    			}else{
+    				tempArr = [i]
+    				temp[row] = tempArr
+    			}
+    			
+    			isItCheckedAlready.push(false)
+    			// console.log(temp)
+    		}
+    		// console.log(temp)
+    		// console.log(arr.length)
+    		for (var i = 0;i<arr.length;i++){
+    			info = arr[i].getInfo()
+    			diagonal = info[0]
+    			row  = info[1]
+    			difference = row - diagonal
+    			sum = row + diagonal
+    			if (difference > 0 && temp.hasOwnProperty(difference)){
+    				isItCheckedAlready[i] = true
+    				toCheckTrue = temp[difference]
+    				for(var j=0;j<toCheckTrue.length;j++){
+    					isItCheckedAlready[toCheckTrue[j]] = true
+    				}
+    			}
+    			if (sum >0 && temp.hasOwnProperty(sum)){
+    				isItCheckedAlready[i] = true
+    				toCheckTrue = temp[sum]
+    				for(var j=0;j<toCheckTrue.length;j++){
+    					isItCheckedAlready[toCheckTrue[j]] = true
+    				}
+    			}
+    			// console.log(temp)
+    		}
+
+    		for(var i=0;i<isItCheckedAlready.length;i++){
+    			if(isItCheckedAlready[i] == true){
+    				Nb++;
+    				// console.log("Nb")
+    			}else{
+    				Nc++;
+    				// console.log("Nc")
+    			}
+    		}
+    		// console.log(key+"-> Nb"+Nb+" Nc"+Nc)
+
+    		
+    	}else{
+    		// not required variables
+    	}
+        
+    }
+}
+console.log(Nb)
+console.log(Nc)
+return [Nb,Nc]
+}
+
+function printAnswer(answer){
+
+	var prevN = 0;
+	var differenceArr = []
+	for(j=0;j<answer.length;j++){
+		var temp1 = []
+		for(var m=0;m<prevN+1;m++){
+			temp1.push(" ")
+			// $("#element").append("-")
+			// $("#element").append("\t")
+		}
+		for(var i=prevN+1;i<answer.length;i++){
+			temp1.push(parseInt(answer[i])-parseInt(answer[prevN]))
+			// $("#element").append(parseInt(answer[i])-parseInt(answer[prevN]))
+			// $("#element").append("\t")
+		}
+		differenceArr.push(temp1)
+		prevN++;
+	}
+	var feasible = checkFeasibility(differenceArr);
+	$("#element").append("<br>");
+	$("#element").append("Nb = \t"+feasible[0]+"\tNc = \t"+feasible[1]+"\tNt = \t"+(parseInt(parseInt(3*feasible[0])+parseInt(2*feasible[1]))));
+	$("#element").append("<br>");
+					
+
+}
+
+
+
+
 $("#submit-button").on("click",function(){
 	$("#element").empty();
 	var N = $("#NumberOfChannels").val();
-	// var start = parseFloat($("#StartingFrequency").val());
-	var delta = parseFloat($("#DeltaFrequency").val()); 
-	var BaseUnit = 4;
 	if(N<10){
 		UIkit.notification({
    			message: 'N should be greater than equal to 10',
@@ -69,339 +261,45 @@ $("#submit-button").on("click",function(){
 		});
 
 	}else{
-		
-		// console.log(N);
-		
-		
-		var check = true;
-		loop1:while(check){
-				var iterator = 0;
-				var counter = 0;
-				while(true){
-
-					if((BaseUnit - 2*iterator)>0){
-						counter = counter + (BaseUnit - 2*iterator);
-						// console.log("B"+iterator+"="+(BaseUnit - 2*iterator));
-						// console.log(counter);
-						if(counter >= N-1){
-							check = false;
-							break;
-						}else{
-							var k =0;
-							while(k<=iterator){
-								// console.log("F"+k);
-								counter = counter + 1;
-								if(counter >= N-1){
-									check = false;
-									break;
-								}
-								k = k + 1;
-							}
-							if(counter >= N-1){
-								check = false;
-								break;
-							}
-						}
-					}else{
-						BaseUnit = BaseUnit + 1;
-						// console.log("Change this Mofu")
-						continue loop1;
-					}
-
-					iterator = iterator + 1;
-				}
-			}
-				// end1:console.log("end");
-				// console.log(BaseUnit);	
-				counter = 1;
-				iterator = 0;
-
-				freq = 0;
-	}
-		console.log(BaseUnit)
-
-
-
-
-		//functions to calculate permutations
-			 		var darray = []
-					var swap = function(array, frstElm, scndElm) {
-
-					    var temp = array[frstElm];
-					    array[frstElm] = array[scndElm];
-					    array[scndElm] = temp;
-					}
-					
-					
-					var permutation = function(array, leftIndex, size) {
-
-					    var x;
-
-					    if(leftIndex === size) {
-
-					        temp = "";
-
-					        for (var i = 0; i < array.length; i++) {
-					            temp += array[i];
-					        }
-
-					        // console.log("---------------> " + temp);
-					        darray.push(temp);
-
-
-					    } else {
-
-					        for(x = leftIndex; x < size; x++) {
-					            swap(array, leftIndex, x);
-					            permutation(array, leftIndex + 1, size);
-					            swap(array, leftIndex, x);
-					        }
-					    }
-					}
-		
-
-		var d = []
-		d.push(4);
-		// $("#element").append(d[0])
-		// $("#element").append("\t")
-		for (var i=1;i<BaseUnit;i++) {
-			d.push(parseInt(d[i-1])+parseInt(1));
-			
+		$("#inputElement").empty();
+		$("#channel-submit-button").css("display","block");
+		string = "<div><label class='channelLabel'>";
+		string2 = ":</label><input class='uk-input uk-form-width-small channel'  type='number' placeholder='0'></div>";
+		for(var i=0;i < N;i++){
+			$("#inputElement").append(string+i+string2);
 		}
-		// console.log(d);
+	}
+});
 
-		
-		// to assign final array
-					var combination = function(array,BaseUnit,N){
-						// console.log(">>>>>>>>")
-						// console.log(array)
-						var narray = [0]
-						var prevObject = 0;
-						counter = 1;
-						iterator = 0;
-						var arrayIterator = 1;
-						while(counter<=N){
-							
-							var k = 0;
-							while(k<BaseUnit - 2*iterator){
-									value = parseInt(narray[arrayIterator-1])+parseInt(array[k]);
-									// console.log("value:")
-									// console.log(array[k])
-									narray.push(value)
-									arrayIterator++;
-									counter = counter + 1;
-									k = k + 1;
-							}
-							if(counter > N-1){
-									break;
-							}
-							// console.log("hi")
-							k=0
-							freqDelta = delta
-							while(k<=iterator){
-									narray.push(parseInt(freqDelta)+parseInt(narray[arrayIterator-1]));
-									counter = counter + 1;
-									freqDelta++;
-									arrayIterator++;
-									if(counter >= N){
-										break;
-									}
-									k = k + 1;
-									
-							}
-							if(counter > N-1){
-									break;
-							}
-							// console.log("bi")
-							iterator = iterator + 1;
+$("#channel-submit-button").on("click",function(){
+	var array = [];
+	var check = true;
+	$(".channel").each(function(index,value){
+		if(this.value == ""){
+			UIkit.notification({
+   			message: index+'Input is empty',
+    		status: 'danger',
+    		pos: 'top-right',
+    		timeout: 3000
+    		
+		});
+			check = false
+		}else{
+			array.push(parseInt(this.value));
+		}
+	});
+	if (check == true){
+		// console.log(array)
+		$("#element").append("<br>");
+		for(var i=0;i<array.length;i++){
+			$("#element").append(array[i]+"\t")
+		}
+		printAnswer(array)
 
-						}
-					// console.log(narray)
-					return narray;
-					}
-
-
-		permutation(d,0,d.length)
-		
-		var toPrintD = []
-		var toPrintN = []
-		var toPrintNB = 0
-		var toPrintNC = 0
-		var toPrintNT = 0
-		for (var outer=0;outer<darray.length;outer++){
-				for(var inner =0 ;inner<darray[outer].length;inner++){
-					$("#element").append(darray[outer][inner])
-					$("#element").append("\t")
-				}
-					answer = combination(darray[outer],BaseUnit,N);
-					$("#element").append("<br>")
-					for (var j=0;j<answer.length;j++){
-						$("#element").append(answer[j])
-						$("#element").append("\t")
-					}
-					$("#element").append("<br>");
-					var prevN = 0;
-					var differenceArr = []
-					for(j=0;j<answer.length;j++){
-						var temp1 = []
-						for(var m=0;m<prevN+1;m++){
-							temp1.push(" ")
-							// $("#element").append("-")
-							// $("#element").append("\t")
-						}
-						for(var i=prevN+1;i<answer.length;i++){
-							temp1.push(parseInt(answer[i])-parseInt(answer[prevN]))
-							// $("#element").append(parseInt(answer[i])-parseInt(answer[prevN]))
-							// $("#element").append("\t")
-						}
-						differenceArr.push(temp1)
-						prevN++;
-					}
-					var feasible = checkFeasibility(differenceArr);
-					$("#element").append("Nb = \t"+feasible[0]+"\tNc = \t"+feasible[1]+"\tNt = \t"+(parseInt(parseInt(3*feasible[0])+parseInt(2*feasible[1]))));
-					$("#element").append("<br>");
-				}	
-			// }	
-		
-		// console.log("diff")
-		// console.log(differenceArr)
-
-		// for(var i=0;i<darray.length;i++){
-		// 	for (var j=0;j<darray[0].length;j++){
-		// 		$("#element").append(darray[i][j])
-		// 		$("#element").append("\t")
-		// 	}
-		// 	$("#element").append("<br>")
-		// 	var answer = combination(darray[i],BaseUnit,N);
-		// 	for (var j=0;j<answer.length;j++){
-		// 		$("#element").append(answer[j])
-		// 		$("#element").append("\t")
-		// 	}
-		// 	$("#element").append("<br>")
-
-		// }
-		// $("#element").append("<br>")
-
-
-		
+	}
 	
 });
 
-function checkFeasibility(differenceArr){
-	var map = {};
-	class Double {
-		constructor(diagonal,row){
-			this.diagonal = diagonal
-			this.row = row
-		}
-		getInfo(){
-			var a = []
-			a.push(this.diagonal)
-			a.push(this.row)
-			return a
-		}
-	}
-	//map["number"] = [Double]
-	for(j=0;j<differenceArr.length;j++){
-		var tempDia = 1
-		for(k=0;k<differenceArr[0].length;k++){
-			if(differenceArr[j][k] == " "){
-
-			}else{
-				if (map.hasOwnProperty(differenceArr[j][k])) {
-					var a = new Double(tempDia,j+1)
-					array = map[differenceArr[j][k]]
-					array.push(a)
-					map[differenceArr[j][k]] = array
-				}else{
-					var a = new Double(tempDia,j+1)
-					var array = []
-					array.push(a)
-					map[differenceArr[j][k]] = array
-				}
-				tempDia++;
-			}
-			
-		}
-	}
-	// console.log("map:")
-	// console.log(map)
-	
-	var Nb = 0
-	var Nc = 0
-	for (var key in map) {
-	    if (map.hasOwnProperty(key)) {
-	    	if(map[key].length > 1){
-	    		//need to include these in the calculation
-	    		// console.log(key + " -> " + map[key].length);
-	    		arr = map[key]
-
-	    		var temp = {}
-	    		var isItCheckedAlready = []
-	    		for (var i =0;i<arr.length;i++){
-	    			info = arr[i].getInfo()
-	    			diagonal = info[0]
-	    			row  = info[1]
-	    			// console.log(key+"-->"+diagonal+","+row)
-	    			if (temp.hasOwnProperty(row)){
-	    				tempArr = temp[row]
-	    				tempArr.push(i)
-	    				temp[row] = tempArr
-	    			}else{
-	    				tempArr = [i]
-	    				temp[row] = tempArr
-	    			}
-	    			
-	    			isItCheckedAlready.push(false)
-	    			// console.log(temp)
-	    		}
-	    		// console.log(temp)
-	    		// console.log(arr.length)
-	    		for (var i = 0;i<arr.length;i++){
-	    			info = arr[i].getInfo()
-	    			diagonal = info[0]
-	    			row  = info[1]
-	    			difference = row - diagonal
-	    			sum = row + diagonal
-	    			if (difference > 0 && temp.hasOwnProperty(difference)){
-	    				isItCheckedAlready[i] = true
-	    				toCheckTrue = temp[difference]
-	    				for(var j=0;j<toCheckTrue.length;j++){
-	    					isItCheckedAlready[toCheckTrue[j]] = true
-	    				}
-	    			}
-	    			if (sum >0 && temp.hasOwnProperty(sum)){
-	    				isItCheckedAlready[i] = true
-	    				toCheckTrue = temp[sum]
-	    				for(var j=0;j<toCheckTrue.length;j++){
-	    					isItCheckedAlready[toCheckTrue[j]] = true
-	    				}
-	    			}
-	    			// console.log(temp)
-	    		}
-
-	    		for(var i=0;i<isItCheckedAlready.length;i++){
-	    			if(isItCheckedAlready[i] == true){
-	    				Nb++;
-	    				// console.log("Nb")
-	    			}else{
-	    				Nc++;
-	    				// console.log("Nc")
-	    			}
-	    		}
-	    		// console.log(key+"-> Nb"+Nb+" Nc"+Nc)
-
-	    		
-	    	}else{
-	    		// not required variables
-	    	}
-	        
-	    }
-	}
-	console.log(Nb)
-	console.log(Nc)
-	return [Nb,Nc]
-}
 
 
 </script>
