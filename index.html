@@ -10,7 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit-icons.min.js"></script>
 	<title>Optical Calculator</title>
 </head>
-<body style="height: 100vh;width:100vw;background-color: green;">
+<body style="width:100vw;background-color: green;">
 	<h1 class="uk-heading-line uk-text-center"><span>UI-DBUS Calculator</span></h1>
 	<div style="margin-top: 10vh;">
 		<div class="uk-margin" uk-margin>
@@ -24,10 +24,13 @@
 	        <button class="uk-button uk-button-secondary" id="channel-submit-button" style="display: none">Submit</button>
     	</div>
 	</div>
-	<div id="element" style="height: 20vh;overflow: auto;text-align: right;">
-		
-	</div>
-	<div id="inputElement" style="height:60vh;display: grid;grid-template-columns: auto auto auto;overflow: auto;grid-row-gap: 10px;" >
+	<div style="display: grid;grid-template-columns: 50vw 50vw">
+		<div id="inputElement" style="display: grid;grid-template-columns: auto auto auto;overflow: auto;grid-row-gap: 10px;" >
+			
+		</div>
+		<div id="element" style="text-align: center;height: 50vh;overflow-y: auto;">
+			
+		</div>
 		
 	</div>
 	
@@ -158,7 +161,10 @@ for (var key in map) {
     			info = arr[i].getInfo()
     			diagonal = info[0]
     			row  = info[1]
-    			// console.log(key+"-->"+diagonal+","+row)
+    			console.log(key+"-->"+diagonal+","+row)
+    			$("#element").append("<br>")
+    			$("#element").append(key+"-->"+diagonal+","+row)
+    			
     			if (temp.hasOwnProperty(row)){
     				tempArr = temp[row]
     				tempArr.push(i)
@@ -223,17 +229,19 @@ function printAnswer(answer){
 
 	var prevN = 0;
 	var differenceArr = []
+
 	for(j=0;j<answer.length;j++){
 		var temp1 = []
+		$("#element").append("<br>");
 		for(var m=0;m<prevN+1;m++){
 			temp1.push(" ")
-			// $("#element").append("-")
-			// $("#element").append("\t")
+			$("#element").append("-")
+			$("#element").append("\t")
 		}
 		for(var i=prevN+1;i<answer.length;i++){
 			temp1.push(parseInt(answer[i])-parseInt(answer[prevN]))
-			// $("#element").append(parseInt(answer[i])-parseInt(answer[prevN]))
-			// $("#element").append("\t")
+			$("#element").append(parseInt(answer[i])-parseInt(answer[prevN]))
+			$("#element").append("\t")
 		}
 		differenceArr.push(temp1)
 		prevN++;
@@ -241,7 +249,7 @@ function printAnswer(answer){
 	var feasible = checkFeasibility(differenceArr);
 	$("#element").append("<br>");
 	$("#element").append("Nb = \t"+feasible[0]+"\tNc = \t"+feasible[1]+"\tNt = \t"+(parseInt(parseInt(3*feasible[0])+parseInt(2*feasible[1]))));
-	$("#element").append("<br>");
+	
 					
 
 }
