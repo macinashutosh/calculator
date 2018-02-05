@@ -120,6 +120,23 @@ class Double {
 		return a
 	}
 }
+class CheckNeightbours{
+    constructor(){
+    	neighbour = {}
+    }
+    addNeightbour(a,b){
+    	var nigga = Math.max(a,b)+","+Math.min(a,b)
+    	if(neighbour.hasOwnProperty(nigga)){
+    		return false;
+    	}else{
+    		neighbour[nigga] = "-"
+    		return true;
+    	}
+    }	
+    returnNeighbour(){
+    	return neighbour
+    }		
+}
 //map["number"] = [Double]
 for(j=0;j<differenceArr.length;j++){
 	var tempDia = 1
@@ -148,13 +165,14 @@ for(j=0;j<differenceArr.length;j++){
 
 var Nb = 0
 var Nc = 0
+var lengthOfTheArray = 0
 for (var key in map) {
     if (map.hasOwnProperty(key)) {
     	if(map[key].length > 1){
     		//need to include these in the calculation
     		// console.log(key + " -> " + map[key].length);
     		arr = map[key]
-
+    		lengthOfTheArray = lengthOfTheArray + arr.length
     		var temp = {}
     		var isItCheckedAlready = []
     		for (var i =0;i<arr.length;i++){
@@ -179,6 +197,7 @@ for (var key in map) {
     		}
     		// console.log(temp)
     		// console.log(arr.length)
+    		var neighbour = new CheckNeightbours();
     		for (var i = 0;i<arr.length;i++){
     			info = arr[i].getInfo()
     			diagonal = info[0]
@@ -190,13 +209,25 @@ for (var key in map) {
     				toCheckTrue = temp[difference]
     				for(var j=0;j<toCheckTrue.length;j++){
     					isItCheckedAlready[toCheckTrue[j]] = true
+    					var result = neighbour.addNeightbour(i,toCheckTrue[j])
+    					if(result == true){
+    						Nb++;
+    					}else{
+    						// Nc++;
+    					}
     				}
+
     			}
     			if (sum >0 && temp.hasOwnProperty(sum)){
-    				isItCheckedAlready[i] = true
     				toCheckTrue = temp[sum]
     				for(var j=0;j<toCheckTrue.length;j++){
     					isItCheckedAlready[toCheckTrue[j]] = true
+    					var result = neighbour.addNeightbour(i,toCheckTrue[j])
+    					if(result == true){
+    						Nb++;
+    					}else{
+    						// Nc++;
+    					}
     				}
     			}
     			// console.log(temp)
@@ -204,7 +235,7 @@ for (var key in map) {
 
     		for(var i=0;i<isItCheckedAlready.length;i++){
     			if(isItCheckedAlready[i] == true){
-    				Nb++;
+    				// Nb++;
     				// console.log("Nb")
     			}else{
     				Nc++;
@@ -222,6 +253,12 @@ for (var key in map) {
 }
 console.log(Nb)
 console.log(Nc)
+
+// for(var key in map){
+//  	var tempArray = map[key]
+// 	lengthOfTheArray = lengthOfTheArray + tempArray.length 
+// }
+console.log(lengthOfTheArray)
 return [Nb,Nc]
 }
 
