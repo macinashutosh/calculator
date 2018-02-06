@@ -106,6 +106,17 @@
 // }
 
 // Fasibility Function
+function factorial(number){
+	if(number<=1){
+		return 1;
+	}
+	return number * factorial(number - 1)
+}
+function getCombination(Number){
+	var numerator = factorial(Number)
+	var denominator = factorial(2)*factorial(Number - 2)
+	return numerator/denominator; 
+}
 function checkFeasibility(differenceArr){
 var map = {};
 class Double {
@@ -172,7 +183,7 @@ for (var key in map) {
     		//need to include these in the calculation
     		// console.log(key + " -> " + map[key].length);
     		arr = map[key]
-    		lengthOfTheArray = lengthOfTheArray + arr.length
+    		lengthOfTheArray = lengthOfTheArray + getCombination(arr.length)
     		var temp = {}
     		var isItCheckedAlready = []
     		for (var i =0;i<arr.length;i++){
@@ -211,7 +222,7 @@ for (var key in map) {
     					isItCheckedAlready[toCheckTrue[j]] = true
     					var result = neighbour.addNeightbour(i,toCheckTrue[j])
     					if(result == true){
-    						Nb++;
+    						// Nb++;
     					}else{
     						// Nc++;
     					}
@@ -224,7 +235,7 @@ for (var key in map) {
     					isItCheckedAlready[toCheckTrue[j]] = true
     					var result = neighbour.addNeightbour(i,toCheckTrue[j])
     					if(result == true){
-    						Nb++;
+    						// Nb++;
     					}else{
     						// Nc++;
     					}
@@ -232,7 +243,8 @@ for (var key in map) {
     			}
     			// console.log(temp)
     		}
-
+    		var toprinthash = neighbour.returnNeighbour();
+    		Nb = Nb + Object.keys(neighbour).length;
     		for(var i=0;i<isItCheckedAlready.length;i++){
     			if(isItCheckedAlready[i] == true){
     				// Nb++;
@@ -251,15 +263,12 @@ for (var key in map) {
         
     }
 }
-console.log(Nb)
-console.log(Nc)
-
 // for(var key in map){
 //  	var tempArray = map[key]
 // 	lengthOfTheArray = lengthOfTheArray + tempArray.length 
 // }
 console.log(lengthOfTheArray)
-return [Nb,Nc]
+return [Nb,lengthOfTheArray]
 }
 
 function printAnswer(answer){
