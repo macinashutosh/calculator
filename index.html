@@ -115,6 +115,7 @@ function factorial(number){
 function getCombination(Number){
 	var numerator = factorial(Number)
 	var denominator = factorial(2)*factorial(Number - 2)
+	console.log(numerator/denominator)
 	return numerator/denominator; 
 }
 function checkFeasibility(differenceArr){
@@ -268,7 +269,7 @@ for (var key in map) {
 // 	lengthOfTheArray = lengthOfTheArray + tempArray.length 
 // }
 console.log(lengthOfTheArray)
-return [Nb,lengthOfTheArray]
+return [Nb,lengthOfTheArray-Nb]
 }
 
 function printAnswer(answer){
