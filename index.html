@@ -10,7 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit-icons.min.js"></script>
 	<title>Optical Calculator</title>
 </head>
-<body style="width:100vw;background-color: green;">
+<body style="width:100vw;height:100vh;background-color: green;overflow: auto">
 	<h1 class="uk-heading-line uk-text-center"><span>UI-DBUS Calculator</span></h1>
 	<div style="margin-top: 10vh;">
 		<div class="uk-margin" uk-margin>
@@ -31,8 +31,16 @@
 		<div id="element" style="text-align: center;height: 50vh;overflow-y: auto;">
 			
 		</div>
-		
 	</div>
+	<br>
+	<div style="display: grid;grid-template-columns: 50vw 50vw;width: 100vw;">
+		<div id ="keys" style="display: grid;min-height: 70vh; grid-template-columns: 12vw 12vw 12vw;grid-column-gap: 5vw;overflow-y: auto; color: #fff">
+
+		</div>
+		<div id="selectedKeys" style="text-align: center;min-height: 70vh;overflow-y: auto;color: #fff">
+		</div>
+	</div>
+
 	
 	<!-- <label class="channelLabel" style="display: none">0:</label><input id ="channel" class="uk-input uk-form-width-small"  type="number" placeholder="0"> -->
 </body>
@@ -40,6 +48,9 @@
 </html>
 
 <style type="text/css">
+	*{
+		background-color: green;
+	}
 	body{
 		width: 100vw;
 		height: 100vh;
@@ -56,54 +67,6 @@
 	}
 </style>
 <script type="text/javascript">
-//Function Used for calculations
-// var combination = function(array,BaseUnit,N){
-// 	// console.log(">>>>>>>>")
-// 	// console.log(array)
-// 	var narray = [0]
-// 	var prevObject = 0;
-// 	counter = 1;
-// 	iterator = 0;
-// 	var arrayIterator = 1;
-// 	while(counter<=N){
-		
-// 		var k = 0;
-// 		while(k<BaseUnit - 2*iterator){
-// 				value = parseInt(narray[arrayIterator-1])+parseInt(array[k]);
-// 				// console.log("value:")
-// 				// console.log(array[k])
-// 				narray.push(value)
-// 				arrayIterator++;
-// 				counter = counter + 1;
-// 				k = k + 1;
-// 		}
-// 		if(counter > N-1){
-// 				break;
-// 		}
-// 		// console.log("hi")
-// 		k=0
-// 		freqDelta = delta
-// 		while(k<=iterator){
-// 				narray.push(parseInt(freqDelta)+parseInt(narray[arrayIterator-1]));
-// 				counter = counter + 1;
-// 				freqDelta++;
-// 				arrayIterator++;
-// 				if(counter >= N){
-// 					break;
-// 				}
-// 				k = k + 1;
-				
-// 		}
-// 		if(counter > N-1){
-// 				break;
-// 		}
-// 		// console.log("bi")
-// 		iterator = iterator + 1;
-
-// 	}
-// // console.log(narray)
-// return narray;
-// }
 
 // Fasibility Function
 function factorial(number){
@@ -136,12 +99,12 @@ class CheckNeightbours{
     constructor(){
     	neighbour = {}
     }
-    addNeightbour(a,b){
+    addNeightbour(a,b,diff){
     	var nigga = Math.max(a,b)+","+Math.min(a,b)
     	if(neighbour.hasOwnProperty(nigga)){
     		return false;
     	}else{
-    		neighbour[nigga] = "-"
+    		neighbour[nigga] = diff;
     		return true;
     	}
     }	
@@ -187,13 +150,17 @@ for (var key in map) {
     		lengthOfTheArray = lengthOfTheArray + getCombination(arr.length)
     		var temp = {}
     		var isItCheckedAlready = []
+    		// $("#keys").append("<div>")
+    		var keyString = "<div>"
     		for (var i =0;i<arr.length;i++){
     			info = arr[i].getInfo()
     			diagonal = info[0]
     			row  = info[1]
-    			console.log(key+"-->"+diagonal+","+row)
-    			$("#element").append("<br>")
-    			$("#element").append(key+"-->"+diagonal+","+row)
+    			console.log(key+"-->"+row+","+diagonal)
+    			// $("#keys").append("<br>")
+    			keyString = keyString + "<br>"
+    			// $("#keys").append(key+"-->"+row+","+diagonal)
+    			keyString = keyString + key+"-->"+row+","+diagonal;
     			
     			if (temp.hasOwnProperty(row)){
     				tempArr = temp[row]
@@ -207,6 +174,9 @@ for (var key in map) {
     			isItCheckedAlready.push(false)
     			// console.log(temp)
     		}
+    		// $("#keys").append("</div>")
+    		keyString = keyString + "</div>"
+    		$("#keys").append(keyString);
     		// console.log(temp)
     		// console.log(arr.length)
     		var neighbour = new CheckNeightbours();
@@ -221,11 +191,17 @@ for (var key in map) {
     				toCheckTrue = temp[difference]
     				for(var j=0;j<toCheckTrue.length;j++){
     					isItCheckedAlready[toCheckTrue[j]] = true
-    					var result = neighbour.addNeightbour(i,toCheckTrue[j])
+    					var result = neighbour.addNeightbour(i,toCheckTrue[j],difference)
     					if(result == true){
-    						// Nb++;
-    					}else{
-    						// Nc++;
+    						$("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
+    						$("#selectedKeys").append("<br>");
+    						// console.log("toCheck:"+toCheckTrue[j])
+    						// console.log(arr[toCheckTrue[j]])
+    						var toShow = arr[toCheckTrue[j]].getInfo();
+    						$("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
+    						$("#selectedKeys").append("<br>");
+    						$("#selectedKeys").append("difference : "+difference);
+    						$("#selectedKeys").append("<br>");
     					}
     				}
 
@@ -234,40 +210,33 @@ for (var key in map) {
     				toCheckTrue = temp[sum]
     				for(var j=0;j<toCheckTrue.length;j++){
     					isItCheckedAlready[toCheckTrue[j]] = true
-    					var result = neighbour.addNeightbour(i,toCheckTrue[j])
-    					if(result == true){
-    						// Nb++;
-    					}else{
-    						// Nc++;
-    					}
+    					var result = neighbour.addNeightbour(i,toCheckTrue[j],sum)
+   						if(result == true){
+   							$("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
+    						$("#selectedKeys").append("<br>");
+    						// console.log("toCheck:"+toCheckTrue[j])
+    						// console.log(arr[toCheckTrue[j]])
+    						var toShow = arr[toCheckTrue[j]].getInfo();
+    						$("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
+    						$("#selectedKeys").append("<br>");
+    						$("#selectedKeys").append("sum : "+sum);
+    						$("#selectedKeys").append("<br>");
+   						}
     				}
     			}
-    			// console.log(temp)
+    			
     		}
     		var toprinthash = neighbour.returnNeighbour();
     		Nb = Nb + Object.keys(neighbour).length;
-    		for(var i=0;i<isItCheckedAlready.length;i++){
-    			if(isItCheckedAlready[i] == true){
-    				// Nb++;
-    				// console.log("Nb")
-    			}else{
-    				Nc++;
-    				// console.log("Nc")
-    			}
-    		}
-    		// console.log(key+"-> Nb"+Nb+" Nc"+Nc)
-
-    		
+    		console.log(neighbour);
+    		// console.log(key+"-> Nb"+Nb+" Nc"+Nc"
     	}else{
     		// not required variables
     	}
         
     }
 }
-// for(var key in map){
-//  	var tempArray = map[key]
-// 	lengthOfTheArray = lengthOfTheArray + tempArray.length 
-// }
+
 console.log(lengthOfTheArray)
 return [Nb,lengthOfTheArray-Nb]
 }
