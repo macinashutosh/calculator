@@ -11,7 +11,7 @@
 	<title>Optical Calculator</title>
 </head>
 <body style="width:100vw;height:100vh;background-color: green;overflow: auto">
-	<h1 class="uk-heading-line uk-text-center"><span>UI-DBUS Calculator</span></h1>
+	<h1 class="uk-heading-line uk-text-center" style="height: 100px"><span>UI-DBUS Calculator</span></h1>
 	<div style="margin-top: 10vh;">
 		<div class="uk-margin" uk-margin>
 	        <label style="color: black;margin-right: 5px;">Number Of Channels:</label>
@@ -24,23 +24,24 @@
 	        <button class="uk-button uk-button-secondary" id="channel-submit-button" style="display: none">Submit</button>
     	</div>
 	</div>
-	<div style="display: grid;grid-template-columns: 50vw 50vw">
-		<div id="inputElement" style="display: grid;grid-template-columns: auto auto auto;overflow: auto;grid-row-gap: 10px;" >
-			
-		</div>
-		<div id="element" style="text-align: center;height: 50vh;overflow-y: auto;">
-			
-		</div>
-	</div>
-	<br>
-	<div style="display: grid;grid-template-columns: 50vw 50vw;width: 100vw;">
-		<div id ="keys" style="display: grid;min-height: 70vh; grid-template-columns: 12vw 12vw 12vw;grid-column-gap: 5vw;overflow-y: auto; color: #fff">
+	<div style="display: flex;flex-direction: column;height: 80vh;overflow: auto;">
+			<div style="display: grid;grid-template-columns: 50vw 50vw;">
+				<div id="inputElement" style="display: grid;height:50vh;grid-template-columns: auto auto auto;overflow: auto;grid-row-gap: 10px;" >
+					
+				</div>
+				<div id="element" style="text-align: center;height: 70vh;overflow-y: auto;">
+					
+				</div>
+			</div>
+			<br>
+			<div style="display: grid;grid-template-columns: 50vw 50vw;width: 100vw; ">
+				<div id ="keys" style="display: grid;grid-template-columns: 12vw 12vw 12vw;min-height: 40vh;grid-column-gap: 5vw;overflow-y: auto; color: #fff">
 
-		</div>
-		<div id="selectedKeys" style="text-align: center;min-height: 70vh;overflow-y: auto;color: #fff">
-		</div>
+				</div>
+				<div id="selectedKeys" style="text-align: center;overflow-y: auto;color: #fff;min-height: 40vh;">
+				</div>
+			</div>
 	</div>
-
 	
 	<!-- <label class="channelLabel" style="display: none">0:</label><input id ="channel" class="uk-input uk-form-width-small"  type="number" placeholder="0"> -->
 </body>
@@ -275,7 +276,7 @@ function printAnswer(answer){
 
 
 $("#submit-button").on("click",function(){
-	$("#element").empty();
+	
 	var N = $("#NumberOfChannels").val();
 	if(N<10){
 		UIkit.notification({
@@ -287,6 +288,9 @@ $("#submit-button").on("click",function(){
 
 	}else{
 		$("#inputElement").empty();
+		$("#element").empty();
+		$("#selectedKeys").empty();
+		$("#keys").empty();
 		$("#channel-submit-button").css("display","block");
 		string = "<div><label class='channelLabel'>";
 		string2 = ":</label><input class='uk-input uk-form-width-small channel'  type='number' placeholder='0'></div>";
