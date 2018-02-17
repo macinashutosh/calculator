@@ -12,7 +12,7 @@
 </head>
 <body style="width:100vw;height:100vh;background-color: green;overflow: auto">
 	<h1 class="uk-heading-line uk-text-center" style="height: 100px"><span>UI-DBUS Calculator</span></h1>
-	<div style="margin-top: 10vh;">
+	<div style="margin-top: 8vh;">
 		<div class="uk-margin" uk-margin>
 	        <label style="color: black;margin-right: 5px;">Number Of Channels:</label>
 	        <div uk-form-custom="target: true">
@@ -24,24 +24,27 @@
 	        <button class="uk-button uk-button-secondary" id="channel-submit-button" style="display: none">Submit</button>
     	</div>
 	</div>
-	<div style="display: flex;flex-direction: column;height: 80vh;overflow: auto;">
-			<div style="display: grid;grid-template-columns: 50vw 50vw;">
-				<div id="inputElement" style="display: grid;height:50vh;grid-template-columns: auto auto auto;overflow: auto;grid-row-gap: 10px;" >
+			
+				<div id="inputElement" style="width:100vw;height:auto;display: grid;grid-template-columns: auto auto auto auto auto auto auto auto;grid-row-gap: 10px;justify-content: center;" >
 					
 				</div>
-				<div id="element" style="text-align: center;height: 70vh;overflow-y: auto;">
+
+				<br>
+
+				<div id="element" style="width:100vw;text-align: center;height:auto;">
 					
 				</div>
-			</div>
-			<br>
-			<div style="display: grid;grid-template-columns: 50vw 50vw;width: 100vw; ">
-				<div id ="keys" style="display: grid;grid-template-columns: 12vw 12vw 12vw;min-height: 40vh;grid-column-gap: 5vw;overflow-y: auto; color: #fff">
+			
+				<br>
+
+				<div id ="keys" style="width:100vw;display: grid;grid-template-columns: auto auto auto auto auto;grid-column-gap: 5vw;height:auto; color: #fff;justify-content: center;">
 
 				</div>
-				<div id="selectedKeys" style="text-align: center;overflow-y: auto;color: #fff;min-height: 40vh;">
+				<br>
+				<div id="selectedKeys" style="width:100vw;text-align: center;height:auto;color: #fff;display: grid;grid-template-columns: auto auto auto auto auto;grid-row-gap: 15px;">
 				</div>
-			</div>
-	</div>
+			
+	
 	
 	<!-- <label class="channelLabel" style="display: none">0:</label><input id ="channel" class="uk-input uk-form-width-small"  type="number" placeholder="0"> -->
 </body>
@@ -194,15 +197,19 @@ for (var key in map) {
     					isItCheckedAlready[toCheckTrue[j]] = true
     					var result = neighbour.addNeightbour(i,toCheckTrue[j],difference)
     					if(result == true){
-    						$("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
-    						$("#selectedKeys").append("<br>");
+    						var selectedKeysString = "<div>"
+    						// $("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
+    						// $("#selectedKeys").append("<br>");
+    						selectedKeysString = selectedKeysString + key+"-->"+row+" , "+diagonal+"<br>";
     						// console.log("toCheck:"+toCheckTrue[j])
     						// console.log(arr[toCheckTrue[j]])
     						var toShow = arr[toCheckTrue[j]].getInfo();
-    						$("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
-    						$("#selectedKeys").append("<br>");
-    						$("#selectedKeys").append("difference : "+difference);
-    						$("#selectedKeys").append("<br>");
+    						// $("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
+    						selectedKeysString = selectedKeysString + key+"-->"+toShow[1]+" , "+toShow[0]+"<br>";
+    						// $("#selectedKeys").append("<br>");
+    						// $("#selectedKeys").append("difference : "+difference);
+    						selectedKeysString = selectedKeysString + "difference : "+difference+"</div>";
+    						$("#selectedKeys").append(selectedKeysString);
     					}
     				}
 
@@ -213,16 +220,19 @@ for (var key in map) {
     					isItCheckedAlready[toCheckTrue[j]] = true
     					var result = neighbour.addNeightbour(i,toCheckTrue[j],sum)
    						if(result == true){
-   							$("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
-    						$("#selectedKeys").append("<br>");
+   							var selectedKeysString = "<div>"
+    						selectedKeysString = selectedKeysString + key+"-->"+row+" , "+diagonal+"<br>";
+   							// $("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
+    						// $("#selectedKeys").append("<br>");
     						// console.log("toCheck:"+toCheckTrue[j])
     						// console.log(arr[toCheckTrue[j]])
     						var toShow = arr[toCheckTrue[j]].getInfo();
-    						$("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
-    						$("#selectedKeys").append("<br>");
-    						$("#selectedKeys").append("sum : "+sum);
-    						$("#selectedKeys").append("<br>");
-    						$("#selectedKeys").append("<br>");
+    						// $("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
+    						// $("#selectedKeys").append("<br>");
+    						selectedKeysString = selectedKeysString + key+"-->"+toShow[1]+" , "+toShow[0]+"<br>";
+    						selectedKeysString = selectedKeysString + "sum : "+sum+"</div>";
+    						$("#selectedKeys").append(selectedKeysString);
+    						
    						}
     				}
     			}
