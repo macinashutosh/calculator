@@ -85,172 +85,175 @@ function getCombination(Number){
 	console.log(numerator/denominator)
 	return numerator/denominator; 
 }
+
+
 function checkFeasibility(differenceArr){
-var map = {};
-class Double {
-	constructor(diagonal,row){
-		this.diagonal = diagonal
-		this.row = row
-	}
-	getInfo(){
-		var a = []
-		a.push(this.diagonal)
-		a.push(this.row)
-		return a
-	}
-}
-class CheckNeightbours{
-    constructor(){
-    	neighbour = {}
-    }
-    addNeightbour(a,b,diff){
-    	var nigga = Math.max(a,b)+","+Math.min(a,b)
-    	if(neighbour.hasOwnProperty(nigga)){
-    		return false;
-    	}else{
-    		neighbour[nigga] = diff;
-    		return true;
-    	}
-    }	
-    returnNeighbour(){
-    	return neighbour
-    }		
-}
-//map["number"] = [Double]
-for(j=0;j<differenceArr.length;j++){
-	var tempDia = 1
-	for(k=0;k<differenceArr[0].length;k++){
-		if(differenceArr[j][k] == " "){
-
-		}else{
-			if (map.hasOwnProperty(differenceArr[j][k])) {
-				var a = new Double(tempDia,j+1)
-				array = map[differenceArr[j][k]]
-				array.push(a)
-				map[differenceArr[j][k]] = array
-			}else{
-				var a = new Double(tempDia,j+1)
-				var array = []
-				array.push(a)
-				map[differenceArr[j][k]] = array
-			}
-			tempDia++;
+	var map = {};
+	class Double {
+		constructor(diagonal,row){
+			this.diagonal = diagonal
+			this.row = row
 		}
-		
+		getInfo(){
+			var a = []
+			a.push(this.diagonal)
+			a.push(this.row)
+			return a
+		}
 	}
-}
-// console.log("map:")
-// console.log(map)
+	class CheckNeightbours{
+		constructor(){
+			neighbour = {}
+		}
+		addNeightbour(a,b,diff){
+			var nigga = Math.max(a,b)+","+Math.min(a,b)
+			if(neighbour.hasOwnProperty(nigga)){
+				return false;
+			}else{
+				neighbour[nigga] = diff;
+				return true;
+			}
+		}	
+		returnNeighbour(){
+			return neighbour
+		}		
+	}
+	//map["number"] = [Double]
 
-var Nb = 0
-var Nc = 0
-var lengthOfTheArray = 0
-for (var key in map) {
-    if (map.hasOwnProperty(key)) {
-    	if(map[key].length > 1){
-    		//need to include these in the calculation
-    		// console.log(key + " -> " + map[key].length);
-    		arr = map[key]
-    		lengthOfTheArray = lengthOfTheArray + getCombination(arr.length)
-    		var temp = {}
-    		var isItCheckedAlready = []
-    		// $("#keys").append("<div>")
-    		var keyString = "<div>"
-    		for (var i =0;i<arr.length;i++){
-    			info = arr[i].getInfo()
-    			diagonal = info[0]
-    			row  = info[1]
-    			console.log(key+"-->"+row+","+diagonal)
-    			// $("#keys").append("<br>")
-    			keyString = keyString + "<br>"
-    			// $("#keys").append(key+"-->"+row+","+diagonal)
-    			keyString = keyString + key+"-->"+row+","+diagonal;
-    			
-    			if (temp.hasOwnProperty(row)){
-    				tempArr = temp[row]
-    				tempArr.push(i)
-    				temp[row] = tempArr
-    			}else{
-    				tempArr = [i]
-    				temp[row] = tempArr
-    			}
-    			
-    			isItCheckedAlready.push(false)
-    			// console.log(temp)
-    		}
-    		// $("#keys").append("</div>")
-    		keyString = keyString + "</div>"
-    		$("#keys").append(keyString);
-    		// console.log(temp)
-    		// console.log(arr.length)
-    		var neighbour = new CheckNeightbours();
-    		for (var i = 0;i<arr.length;i++){
-    			info = arr[i].getInfo()
-    			diagonal = info[0]
-    			row  = info[1]
-    			difference = row - diagonal
-    			sum = row + diagonal
-    			if (difference > 0 && temp.hasOwnProperty(difference)){
-    				isItCheckedAlready[i] = true
-    				toCheckTrue = temp[difference]
-    				for(var j=0;j<toCheckTrue.length;j++){
-    					isItCheckedAlready[toCheckTrue[j]] = true
-    					var result = neighbour.addNeightbour(i,toCheckTrue[j],difference)
-    					if(result == true){
-    						var selectedKeysString = "<div>"
-    						// $("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
-    						// $("#selectedKeys").append("<br>");
-    						selectedKeysString = selectedKeysString + key+"-->"+row+" , "+diagonal+"<br>";
-    						// console.log("toCheck:"+toCheckTrue[j])
-    						// console.log(arr[toCheckTrue[j]])
-    						var toShow = arr[toCheckTrue[j]].getInfo();
-    						// $("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
-    						selectedKeysString = selectedKeysString + key+"-->"+toShow[1]+" , "+toShow[0]+"<br>";
-    						// $("#selectedKeys").append("<br>");
-    						// $("#selectedKeys").append("difference : "+difference);
-    						selectedKeysString = selectedKeysString + "difference : "+difference+"</div>";
-    						$("#selectedKeys").append(selectedKeysString);
-    					}
-    				}
+	for(j=0;j<differenceArr.length;j++){
+		var tempDia = 1
+		for(k=0;k<differenceArr[0].length;k++){
+			if(differenceArr[j][k] == " "){
 
-    			}
-    			if (sum >0 && temp.hasOwnProperty(sum)){
-    				toCheckTrue = temp[sum]
-    				for(var j=0;j<toCheckTrue.length;j++){
-    					isItCheckedAlready[toCheckTrue[j]] = true
-    					var result = neighbour.addNeightbour(i,toCheckTrue[j],sum)
-   						if(result == true){
-   							var selectedKeysString = "<div>"
-    						selectedKeysString = selectedKeysString + key+"-->"+row+" , "+diagonal+"<br>";
-   							// $("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
-    						// $("#selectedKeys").append("<br>");
-    						// console.log("toCheck:"+toCheckTrue[j])
-    						// console.log(arr[toCheckTrue[j]])
-    						var toShow = arr[toCheckTrue[j]].getInfo();
-    						// $("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
-    						// $("#selectedKeys").append("<br>");
-    						selectedKeysString = selectedKeysString + key+"-->"+toShow[1]+" , "+toShow[0]+"<br>";
-    						selectedKeysString = selectedKeysString + "sum : "+sum+"</div>";
-    						$("#selectedKeys").append(selectedKeysString);
-    						
-   						}
-    				}
-    			}
-    			
-    		}
-    		var toprinthash = neighbour.returnNeighbour();
-    		Nb = Nb + Object.keys(neighbour).length;
-    		console.log(neighbour);
-    		// console.log(key+"-> Nb"+Nb+" Nc"+Nc"
-    	}else{
-    		// not required variables
-    	}
-        
-    }
-}
+			}else{
+				if (map.hasOwnProperty(differenceArr[j][k])) {
+					var a = new Double(tempDia,j+1)
+					array = map[differenceArr[j][k]]
+					array.push(a)
+					map[differenceArr[j][k]] = array
+				}else{
+					var a = new Double(tempDia,j+1)
+					var array = []
+					array.push(a)
+					map[differenceArr[j][k]] = array
+				}
+				tempDia++;
+			}
+			
+		}
+	}
+	// console.log("map:")
+	// console.log(map)
 
-console.log(lengthOfTheArray)
-return [Nb,lengthOfTheArray-Nb]
+	var Nb = 0
+	var Nc = 0
+	var lengthOfTheArray = 0
+	for (var key in map) {
+	    if (map.hasOwnProperty(key)) {
+	    	if(map[key].length > 1){
+	    		//need to include these in the calculation
+	    		// console.log(key + " -> " + map[key].length);
+	    		arr = map[key]
+	    		lengthOfTheArray = lengthOfTheArray + getCombination(arr.length)
+	    		var temp = {}
+	    		var isItCheckedAlready = []
+	    		// $("#keys").append("<div>")
+	    		// var keyString = "<div>"
+	    		for (var i =0;i<arr.length;i++){
+	    			info = arr[i].getInfo()
+	    			diagonal = info[0]
+	    			row  = info[1]
+	    			console.log(key+"-->"+row+","+diagonal)
+	    			// $("#keys").append("<br>")
+	    			// keyString = keyString + "<br>"
+	    			// $("#keys").append(key+"-->"+row+","+diagonal)
+	    			// keyString = keyString + key+"-->"+row+","+diagonal;
+	    			
+	    			if (temp.hasOwnProperty(row)){
+	    				tempArr = temp[row]
+	    				tempArr.push(i)
+	    				temp[row] = tempArr
+	    			}else{
+	    				tempArr = [i]
+	    				temp[row] = tempArr
+	    			}
+	    			
+	    			isItCheckedAlready.push(false)
+	    			// console.log(temp)
+	    		}
+	    		// $("#keys").append("</div>")
+	    		// keyString = keyString + "</div>"
+	    		// $("#keys").append(keyString);
+	    		// console.log(temp)
+	    		// console.log(arr.length)
+	    		var neighbour = new CheckNeightbours();
+	    		for (var i = 0;i<arr.length;i++){
+	    			info = arr[i].getInfo()
+	    			diagonal = info[0]
+	    			row  = info[1]
+	    			difference = row - diagonal
+	    			sum = row + diagonal
+	    			if (difference > 0 && temp.hasOwnProperty(difference)){
+	    				isItCheckedAlready[i] = true
+	    				toCheckTrue = temp[difference]
+	    				for(var j=0;j<toCheckTrue.length;j++){
+	    					isItCheckedAlready[toCheckTrue[j]] = true
+	    					var result = neighbour.addNeightbour(i,toCheckTrue[j],difference)
+	    					if(result == true){
+	    						// var selectedKeysString = "<div>"
+	    						// $("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
+	    						// $("#selectedKeys").append("<br>");
+	    						// selectedKeysString = selectedKeysString + key+"-->"+row+" , "+diagonal+"<br>";
+	    						// console.log("toCheck:"+toCheckTrue[j])
+	    						// console.log(arr[toCheckTrue[j]])
+	    						var toShow = arr[toCheckTrue[j]].getInfo();
+	    						// $("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
+	    						// selectedKeysString = selectedKeysString + key+"-->"+toShow[1]+" , "+toShow[0]+"<br>";
+	    						// $("#selectedKeys").append("<br>");
+	    						// $("#selectedKeys").append("difference : "+difference);
+	    						// selectedKeysString = selectedKeysString + "difference : "+difference+"</div>";
+	    						// $("#selectedKeys").append(selectedKeysString);
+	    					}
+	    				}
+
+	    			}
+	    			if (sum >0 && temp.hasOwnProperty(sum)){
+	    				toCheckTrue = temp[sum]
+	    				for(var j=0;j<toCheckTrue.length;j++){
+	    					isItCheckedAlready[toCheckTrue[j]] = true
+	    					var result = neighbour.addNeightbour(i,toCheckTrue[j],sum)
+	   						if(result == true){
+	   							// var selectedKeysString = "<div>"
+	    						// selectedKeysString = selectedKeysString + key+"-->"+row+" , "+diagonal+"<br>";
+	   							// $("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
+	    						// $("#selectedKeys").append("<br>");
+	    						// console.log("toCheck:"+toCheckTrue[j])
+	    						// console.log(arr[toCheckTrue[j]])
+	    						var toShow = arr[toCheckTrue[j]].getInfo();
+	    						// $("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
+	    						// $("#selectedKeys").append("<br>");
+	    						// selectedKeysString = selectedKeysString + key+"-->"+toShow[1]+" , "+toShow[0]+"<br>";
+	    						// selectedKeysString = selectedKeysString + "sum : "+sum+"</div>";
+	    						// $("#selectedKeys").append(selectedKeysString);
+	    						
+	   						}
+	    				}
+	    			}
+	    			
+	    		}
+	    		var toprinthash = neighbour.returnNeighbour();
+	    		Nb = Nb + Object.keys(neighbour).length;
+	    		console.log(neighbour);
+	    		// console.log(key+"-> Nb"+Nb+" Nc"+Nc"
+	    	}else{
+	    		// not required variables
+	    	}
+	        
+	    }
+	}
+
+	console.log(lengthOfTheArray)
+	return [Nb,lengthOfTheArray-Nb]
 }
 
 function printAnswer(answer){
@@ -275,11 +278,10 @@ function printAnswer(answer){
 		prevN++;
 	}
 	var feasible = checkFeasibility(differenceArr);
-	$("#element").append("<br>");
-	$("#element").append("Nb = \t"+feasible[0]+"\tNc = \t"+feasible[1]+"\tNt = \t"+(parseInt(parseInt(3*feasible[0])+parseInt(2*feasible[1]))));
+	// $("#element").append("<br>");
+	// $("#element").append("Nb = \t"+feasible[0]+"\tNc = \t"+feasible[1]+"\tNt = \t"+(parseInt(parseInt(3*feasible[0])+parseInt(2*feasible[1]))));
+	return feasible
 	
-					
-
 }
 
 
@@ -311,7 +313,7 @@ $("#submit-button").on("click",function(){
 });
 
 $("#channel-submit-button").on("click",function(){
-	var array = [];
+	var inputArray = [];
 	var check = true;
 	$(".channel").each(function(index,value){
 		if(this.value == ""){
@@ -324,21 +326,26 @@ $("#channel-submit-button").on("click",function(){
 		});
 			check = false
 		}else{
-			array.push(parseInt(this.value));
+			inputArray.push(parseInt(this.value));
 		}
 	});
 	if (check == true){
 		// console.log(array)
 		$("#element").empty();
-		$("#element").append("<br>");
-		for(var i=0;i<array.length;i++){
-			$("#element").append(array[i]+"\t")
+		$("#element").append("<br>")
+		for(var j=0;j<inputArray.length;j++){
+			$("#element").append(inputArray[j]+"\t")
 		}
-		printAnswer(array)
+		var finalResults = printAnswer(inputArray)
+		$("#element").append("<br>");
+		$("#element").append("Nb = \t"+finalResults[0]+"\tNc = \t"+finalResults[1]+"\tNt = \t"+(parseInt(parseInt(3*finalResults[0])+parseInt(2*finalResults[1]))));
+		
 
 	}
 	
 });
+
+
 
 
 
