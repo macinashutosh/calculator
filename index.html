@@ -106,13 +106,18 @@ function checkFeasibility(differenceArr){
 			neighbour = {}
 		}
 		addNeightbour(a,b,diff){
-			var nigga = Math.max(a,b)+","+Math.min(a,b)
-			if(neighbour.hasOwnProperty(nigga)){
-				return false;
+			if(diff > 0){
+				var nigga = Math.max(a,b)+","+Math.min(a,b)
+				if(neighbour.hasOwnProperty(nigga)){
+					return false;
+				}else{
+					neighbour[nigga] = diff;
+					return true;
+				}
 			}else{
-				neighbour[nigga] = diff;
-				return true;
+				return false;
 			}
+			
 		}	
 		returnNeighbour(){
 			return neighbour
