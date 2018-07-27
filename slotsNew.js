@@ -186,9 +186,11 @@ function helloWorld(){
 
 
   	// var inputArray = [8,10,12,14,16,15,9,11,13,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-  	var inputArray = [8,10,12,14,16,18, 15, 9,11,13,15, 14, 8,10, 13];
-  	var BaseUnit = 6;
-  	var fwmMargin = 20;
+    var checkIfTheAnswerChanged = false;
+    var startingValue = 93;
+    var inputArray = [9,11,13,15, 14];
+  	var BaseUnit = inputArray.length - 1;
+  	var fwmMargin = 0;
   	var N = inputArray.length+1;
   			var baseunitArray = [];
 			var BaseUnitTemp = [];
@@ -265,21 +267,24 @@ function helloWorld(){
 			// console.log(permutedBaseunits)
 
 			var tempArray1 = [];
-			tempArray1.push(0)
+			tempArray1.push(startingValue)
+      var first = inputArray[0] + startingValue
 			for (var jtr1=0;jtr1<inputArray.length;jtr1++){
 				if(jtr1 === 0){
-					tempArray1.push(inputArray[jtr1]);
+					tempArray1.push(first);
 				}else{
-					tempArray1.push(tempArray1[jtr1]+inputArray[jtr1]);
+					tempArray1.push(first+inputArray[jtr1]);
+          first = first + inputArray[jtr1];
+
 				}
 
 			}
-			console.log(tempArray1)
+
 			var temp = printAnswer(tempArray1);
 			var currentSum = parseInt(3*temp[0])+parseInt(2*temp[1])
 			var finalResults= temp;
 			var finalArray=inputArray;
-			var checkTheForLoop = true;
+      var finalSummedArray = tempArray1;
       console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
       console.log("first combination")
       console.log("First Sum:" + currentSum);
@@ -288,6 +293,8 @@ function helloWorld(){
       console.log("First Nb:" + temp[0] );
       console.log("First Nc:" + temp[1] );
       console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+			var checkTheForLoop = true;
+
 
 
 			for(var itr=0;itr<permutedBaseunits[0].length;itr++){
@@ -331,12 +338,14 @@ function helloWorld(){
 				for (var itr2 = 0;itr2<permutedResultsTemp.length;itr2++){
 					var tempArray = new Array();
 
-					tempArray.push(0);
+					tempArray.push(startingValue);
+          var second = startingValue;
 					for (var jtr1=0;jtr1<permutedResultsTemp[0].length;jtr1++){
 						if(jtr === 0){
-							tempArray.push(permutedResultsTemp[itr2][jtr]);
+							tempArray.push(second);
 						}else{
-							tempArray.push(tempArray[jtr1]+permutedResultsTemp[itr2][jtr1]);
+							tempArray.push(second+permutedResultsTemp[itr2][jtr1]);
+              second  = second + permutedResultsTemp[itr2][jtr1];
 						}
 
 					}
@@ -349,12 +358,13 @@ function helloWorld(){
 					temp = printAnswer(permutedResults[i])
 
 					var tempSum = parseInt(3*temp[0])+parseInt(2*temp[1]);
-					if(tempSum <= currentSum){
+					if(parseInt(tempSum) <= parseInt(currentSum)){
 						currentSum = tempSum;
 						finalArray = permutedResults[i];
 						finalResults = temp;
             finalB = temp[0];
             finalC = temp[1];
+            checkIfTheAnswerChanged = true;
 					}
 					if (currentSum < fwmMargin){
 							checkTheForLoop = false;
@@ -368,11 +378,17 @@ function helloWorld(){
 
 
 			}
+        if (checkIfTheAnswerChanged){
+          console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+          console.log("Final Sum:" + currentSum);
+    			console.log("Final Answer summed:" + finalArray);
+          console.log("Final Nb:" + finalB );
+          console.log("Final Nc:" + finalC );
+          console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+        }else{
+          console.log("same as the first combination")
+        }
 
-			console.log("Final Sum:" + currentSum);
-			console.log("Final Answer:" + finalArray);
-      console.log("Final Nb:" + finalB );
-      console.log("Final Nc:" + finalC );
 
       return 'success';
 
