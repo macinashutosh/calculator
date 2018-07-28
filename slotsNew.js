@@ -1,6 +1,6 @@
 
 function helloWorld(){
-  	function factorial(number){
+  function factorial(number){
 			if(number<=1){
 				return 1;
 			}
@@ -187,9 +187,9 @@ function helloWorld(){
 
   	// var inputArray = [8,10,12,14,16,15,9,11,13,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
     var checkIfTheAnswerChanged = false;
-    var startingValue = 93;
+    var startingValue = [0,10,26,38,56,70,78];
     var inputArray = [9,11,13,15, 14];
-  	var BaseUnit = inputArray.length - 1;
+  	var BaseUnit = 4;
   	var fwmMargin = 0;
   	var N = inputArray.length+1;
   			var baseunitArray = [];
@@ -267,8 +267,10 @@ function helloWorld(){
 			// console.log(permutedBaseunits)
 
 			var tempArray1 = [];
-			tempArray1.push(startingValue)
-      var first = inputArray[0] + startingValue
+      for (var idk=0;idk< startingValue.length;idk++){
+        tempArray1.push(startingValue[idk])
+      }
+      var first = inputArray[0] + startingValue[startingValue.length - 1];
 			for (var jtr1=0;jtr1<inputArray.length;jtr1++){
 				if(jtr1 === 0){
 					tempArray1.push(first);
@@ -337,9 +339,10 @@ function helloWorld(){
 				// Permuted temp to Results
 				for (var itr2 = 0;itr2<permutedResultsTemp.length;itr2++){
 					var tempArray = new Array();
-
-					tempArray.push(startingValue);
-          var second = startingValue;
+          for (var idk=0;idk< startingValue.length;idk++){
+            tempArray.push(startingValue[idk])
+          }
+          var second = startingValue[startingValue.length - 1];
 					for (var jtr1=0;jtr1<permutedResultsTemp[0].length;jtr1++){
 						if(jtr === 0){
 							tempArray.push(second);
@@ -351,10 +354,10 @@ function helloWorld(){
 					}
 					permutedResults.push(tempArray)
 				}
-
 				//permutate function ends here
 
 				for (var i =0;i<permutedResults.length;i++){
+
 					temp = printAnswer(permutedResults[i])
 
 					var tempSum = parseInt(3*temp[0])+parseInt(2*temp[1]);
