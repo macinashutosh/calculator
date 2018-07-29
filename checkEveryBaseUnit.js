@@ -1,6 +1,6 @@
 
 function helloWorld(){
-  	function factorial(number){
+  function factorial(number){
 			if(number<=1){
 				return 1;
 			}
@@ -11,6 +11,35 @@ function helloWorld(){
 			var denominator = factorial(2)*factorial(Number - 2)
 			return numerator/denominator;
 	}
+
+  function printIt(arr){
+    for(var i=0;i<arr.length;i++){
+      console.log(arr[i].toString());
+    }
+  }
+
+  function permute(permutation) {
+    var length = permutation.length,
+        result = [permutation.slice()],
+        c = new Array(length).fill(0),
+        i = 1, k, p;
+
+    while (i < length) {
+      if (c[i] < i) {
+        k = i % 2 && c[i];
+        p = permutation[i];
+        permutation[i] = permutation[k];
+        permutation[k] = p;
+        ++c[i];
+        i = 1;
+        result.push(permutation.slice());
+      } else {
+        c[i] = 0;
+        ++i;
+      }
+    }
+    return result;
+  }
 
 
   var finalB = 0;
@@ -184,11 +213,65 @@ function helloWorld(){
 
 	// PrintAnswer Ends here
 
+  // Reading FILE and Setting a part starts here
+  function createLineReader(fileName){
+      var EM = require("events").EventEmitter
+      var ev = new EM()
+      var stream = require("fs").createReadStream(fileName)
+      var remainder = null;
+      stream.on("data",function(data){
+          if(remainder != null){//append newly received data chunk
+              var tmp = new Buffer(remainder.length+data.length)
+              remainder.copy(tmp)
+              data.copy(tmp,remainder.length)
+              data = tmp;
+          }
+          var start = 0;
+          for(var i=0; i<data.length; i++){
+              if(data[i] == 10){ //\n new line
+                  var line = data.slice(start,i)
+                  ev.emit("line", line)
+                  start = i+1;
+              }
+          }
+          if(start<data.length){
+              remainder = data.slice(start);
+          }else{
+              remainder = null;
+          }
+      })
+
+      stream.on("end",function(){
+          if(null!=remainder){
+            console.log(remainder)
+            ev.emit("line",remainder);
+          }else{
+              printBest(fileArr);
+          }
+      })
+
+      return ev
+  }
+
+
+  //---------main---------------
+
+  var best = [];
+  lineReader = createLineReader("outputs.txt",fileStart);
+  lineReader.on("line",function(line){
+
+  });
+  // Reading FILE and Setting a part ends here
 
   	// var inputArray = [8,10,12,14,16,15,9,11,13,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-  	var inputArray = [8,10,12,14,16, 15, 9,11,13, 14, 8,10];
-  	var BaseUnit = 6;
-  	var fwmMargin = 20;
+    var checkIfTheAnswerChanged = false;
+    var best = [];
+
+
+    var startingValue = [0];
+    var inputArray = [8,10,12,14,16];
+  	var BaseUnit = inputArray.length;
+  	var fwmMargin = 0;
   	var N = inputArray.length+1;
   			var baseunitArray = [];
 			var BaseUnitTemp = [];
@@ -235,28 +318,7 @@ function helloWorld(){
 				}
 				// console.log(baseunitArray)
 				// End of Assignment of BaseUnit Arrays
-			function permute(permutation) {
-			  var length = permutation.length,
-			      result = [permutation.slice()],
-			      c = new Array(length).fill(0),
-			      i = 1, k, p;
 
-			  while (i < length) {
-			    if (c[i] < i) {
-			      k = i % 2 && c[i];
-			      p = permutation[i];
-			      permutation[i] = permutation[k];
-			      permutation[k] = p;
-			      ++c[i];
-			      i = 1;
-			      result.push(permutation.slice());
-			    } else {
-			      c[i] = 0;
-			      ++i;
-			    }
-			  }
-			  return result;
-			}
 			var permutedBaseunits = []
 
 			for(var itr1=0;itr1<baseunitArray.length;itr1++){
@@ -265,21 +327,26 @@ function helloWorld(){
 			// console.log(permutedBaseunits)
 
 			var tempArray1 = [];
-			tempArray1.push(0)
+      for (var idk=0;idk< startingValue.length;idk++){
+        tempArray1.push(startingValue[idk])
+      }
+      var first = inputArray[0] + startingValue[startingValue.length - 1];
 			for (var jtr1=0;jtr1<inputArray.length;jtr1++){
 				if(jtr1 === 0){
-					tempArray1.push(inputArray[jtr1]);
+					tempArray1.push(first);
 				}else{
-					tempArray1.push(tempArray1[jtr1]+inputArray[jtr1]);
+					tempArray1.push(first+inputArray[jtr1]);
+          first = first + inputArray[jtr1];
+
 				}
 
 			}
-			console.log(tempArray1)
+
 			var temp = printAnswer(tempArray1);
 			var currentSum = parseInt(3*temp[0])+parseInt(2*temp[1])
 			var finalResults= temp;
 			var finalArray=inputArray;
-			var checkTheForLoop = true;
+      var finalSummedArray = tempArray1;
       console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
       console.log("first combination")
       console.log("First Sum:" + currentSum);
@@ -288,6 +355,9 @@ function helloWorld(){
       console.log("First Nb:" + temp[0] );
       console.log("First Nc:" + temp[1] );
       console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+      var prevSum = currentSum;
+			var checkTheForLoop = true;
+
 
 
 			for(var itr=0;itr<permutedBaseunits[0].length;itr++){
@@ -330,31 +400,43 @@ function helloWorld(){
 				// Permuted temp to Results
 				for (var itr2 = 0;itr2<permutedResultsTemp.length;itr2++){
 					var tempArray = new Array();
-
-					tempArray.push(0);
+          for (var idk=0;idk< startingValue.length;idk++){
+            tempArray.push(startingValue[idk])
+          }
+          var second = startingValue[startingValue.length - 1];
 					for (var jtr1=0;jtr1<permutedResultsTemp[0].length;jtr1++){
 						if(jtr === 0){
-							tempArray.push(permutedResultsTemp[itr2][jtr]);
+							tempArray.push(second);
 						}else{
-							tempArray.push(tempArray[jtr1]+permutedResultsTemp[itr2][jtr1]);
+							tempArray.push(second+permutedResultsTemp[itr2][jtr1]);
+              second  = second + permutedResultsTemp[itr2][jtr1];
 						}
 
 					}
 					permutedResults.push(tempArray)
 				}
-
 				//permutate function ends here
 
 				for (var i =0;i<permutedResults.length;i++){
+
 					temp = printAnswer(permutedResults[i])
 
 					var tempSum = parseInt(3*temp[0])+parseInt(2*temp[1]);
-					if(tempSum <= currentSum){
+					if(parseInt(tempSum) <= parseInt(currentSum)){
+
+            if (prevSum == currentSum){
+
+              best.push(permutedResults);
+            }else{
+                prevSum = currentSum;
+                best = [];
+            }
 						currentSum = tempSum;
 						finalArray = permutedResults[i];
 						finalResults = temp;
             finalB = temp[0];
             finalC = temp[1];
+            checkIfTheAnswerChanged = true;
 					}
 					if (currentSum < fwmMargin){
 							checkTheForLoop = false;
@@ -368,13 +450,27 @@ function helloWorld(){
 
 
 			}
+        // if (checkIfTheAnswerChanged){
+        //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        //   console.log("Final Sum:" + currentSum);
+    		// 	console.log("Final Answer summed:" + finalArray);
+        //   console.log("Final Nb:" + finalB );
+        //   console.log("Final Nc:" + finalC );
+        //   console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+        // }else{
+        //   console.log("same as the first combination")
+        // }
 
-			console.log("Final Sum:" + currentSum);
-			console.log("Final Answer:" + finalArray);
-      console.log("Final Nb:" + finalB );
-      console.log("Final Nc:" + finalC );
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log("best sum:"+prevSum)
+        console.log("Number of Best combination  " + best.length)
+        console.log('\n')
+        console.log("Best Results:");
+        printIt(best)
 
       return 'success';
+
+
 
 };
 
