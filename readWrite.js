@@ -7,8 +7,7 @@
 //    }
 // });
 
-// Reading FILE and Setting a part starts here
-function createLineReader(fileName){
+function createLineReader(fileName,fileStartArr){
     var EM = require("events").EventEmitter
     var ev = new EM()
     var stream = require("fs").createReadStream(fileName)
@@ -24,7 +23,7 @@ function createLineReader(fileName){
         for(var i=0; i<data.length; i++){
             if(data[i] == 10){ //\n new line
                 var line = data.slice(start,i)
-                ev.emit("line", line)
+                ev.emit("line", line,fileStartArr.push(line.toString().split(',')))
                 start = i+1;
             }
         }
@@ -37,10 +36,9 @@ function createLineReader(fileName){
 
     stream.on("end",function(){
         if(null!=remainder){
-          console.log(remainder)
-          ev.emit("line",remainder);
+          ev.emit("line",remainder)
         }else{
-            printBest(fileArr);
+          ev.emit("array",fileStartArr)
         }
     })
 
@@ -50,9 +48,21 @@ function createLineReader(fileName){
 
 //---------main---------------
 
-var best = [];
-var fileStart = [];
-lineReader = createLineReader("outputs.txt",fileStart);
-lineReader.on("line",function(line){
+var fileStartArray = [];
+lineReader = createLineReader("outputs.txt",fileStartArray)
 
+lineReader.on("line",function(line){
+  var arr = line.toString().split(',');
+});
+lineReader.on("array",function(array){
+  console.log(array);
+  var tempConvertFromString = []
+  for(var i=0;i<array.length;i++){
+    var arr = [];
+    for(var j=0;j<array[i].length;j++){
+      arr.push(parseInt(array[i][j]))
+    }
+    tempConvertFromString.push(arr);
+  }
+  console.log(tempConvertFromString);
 });

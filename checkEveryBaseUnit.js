@@ -6,6 +6,7 @@ function helloWorld(){
 			}
 			return number * factorial(number - 1)
 	}
+
 	function getCombination(Number){
 			var numerator = factorial(Number)
 			var denominator = factorial(2)*factorial(Number - 2)
@@ -213,8 +214,201 @@ function helloWorld(){
 
 	// PrintAnswer Ends here
 
+
+
+
+
+  function getBestResult(startingValue,inputArray,BaseUnit){
+    var best = []
+    // var startingValue = [0];
+    // var inputArray = [8,10,12,14,16];
+    // var BaseUnit = inputArray.length - 1;
+    var fwmMargin = 0;
+    var N = inputArray.length+1;
+        var baseunitArray = [];
+      var BaseUnitTemp = [];
+        counter = 1;
+        iterator = 0;
+        previousBaseUnit = BaseUnit;
+        var checkBase = true
+        freq = 0;
+        while(counter <= N){
+
+          var k = 0
+          var temp = counter;
+          var deltaSum = 0
+          BaseUnitTemp = []
+          while(k<BaseUnit - 2*iterator){
+            BaseUnitTemp.push(inputArray[counter+k-1])
+            k = k + 1;
+            temp+=1
+            if(temp > N){
+            checkBase = false;
+            break;
+            }
+          }
+          if(checkBase){
+            baseunitArray.push(BaseUnitTemp);
+            counter = counter + k;
+            previousBaseUnit = previousBaseUnit- 2;
+          }
+          if(counter > N-1){
+            break;
+          }
+
+          k = 0;
+          BaseUnitTemp = []
+          BaseUnitTemp.push(inputArray[counter-1])
+          baseunitArray.push(BaseUnitTemp)
+          counter = counter + 1;
+
+          if(counter > N-1){
+            break;
+          }
+          iterator = iterator + 1;
+
+        }
+        // console.log(baseunitArray)
+        // End of Assignment of BaseUnit Arrays
+
+      var permutedBaseunits = []
+
+      for(var itr1=0;itr1<baseunitArray.length;itr1++){
+          permutedBaseunits.push(permute(baseunitArray[itr1]))
+      }
+      // console.log(permutedBaseunits)
+
+      var tempArray1 = [];
+      for (var idk=0;idk< startingValue.length;idk++){
+        tempArray1.push(startingValue[idk])
+      }
+      var first = inputArray[0] + startingValue[startingValue.length - 1];
+      for (var jtr1=0;jtr1<inputArray.length;jtr1++){
+        if(jtr1 === 0){
+          tempArray1.push(first);
+        }else{
+          tempArray1.push(first+inputArray[jtr1]);
+          first = first + inputArray[jtr1];
+
+        }
+
+      }
+
+      var temp = printAnswer(tempArray1);
+      var currentSum = parseInt(3*temp[0])+parseInt(2*temp[1])
+      var finalResults= temp;
+      var finalArray=inputArray;
+      var finalSummedArray = tempArray1;
+      // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+      // console.log("first combination")
+      // console.log("First Sum:" + currentSum);
+      // console.log("First answer:"+inputArray)
+      // console.log("First Answer(summed):" + tempArray1);
+      // console.log("First Nb:" + temp[0] );
+      // console.log("First Nc:" + temp[1] );
+      // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+      var prevSum = currentSum;
+      var checkTheForLoop = true;
+      for(var itr=0;itr<permutedBaseunits[0].length;itr++){
+        var permutedResultsTemp = [];
+        var startTemp  = [];
+        startTemp.push(permutedBaseunits[0][itr]);
+
+        for(var jtr=1;jtr<permutedBaseunits.length;jtr++){
+          if(permutedBaseunits[jtr].length > 1){
+            var tempStartBaseunit = []
+            for(var ktr=0;ktr<permutedBaseunits[jtr].length;ktr++){
+
+              for(var ltr=0;ltr<startTemp.length;ltr++){
+                var tempBaseunit = [];
+                for(var i=0;i<startTemp[ltr].length;i++){
+                  tempBaseunit.push(startTemp[ltr][i]);
+                }
+                for(var i1=0;i1<permutedBaseunits[jtr][ktr].length;i1++){
+                  tempBaseunit.push(permutedBaseunits[jtr][ktr][i1]);
+                }
+                tempStartBaseunit.push(tempBaseunit)
+              }
+            }
+            startTemp = tempStartBaseunit
+          }else{
+            var spacing = permutedBaseunits[jtr][0][0];
+            for(var ltr1=0;ltr1<startTemp.length;ltr1++){
+              startTemp[ltr1].push(spacing)
+            }
+
+          }
+
+        }
+        for(var ltr3=0;ltr3<startTemp.length;ltr3++){
+          permutedResultsTemp.push(startTemp[ltr3])
+        }
+        // console.log(permutedResultsTemp.length)
+        // console.log(startTemp)
+        var permutedResults = [];
+        // Permuted temp to Results
+        for (var itr2 = 0;itr2<permutedResultsTemp.length;itr2++){
+          var tempArray = new Array();
+          for (var idk=0;idk< startingValue.length;idk++){
+            tempArray.push(startingValue[idk])
+          }
+          var second = startingValue[startingValue.length - 1];
+          for (var jtr1=0;jtr1<permutedResultsTemp[0].length;jtr1++){
+            if(jtr === 0){
+              tempArray.push(second);
+            }else{
+              tempArray.push(second+permutedResultsTemp[itr2][jtr1]);
+              second  = second + permutedResultsTemp[itr2][jtr1];
+            }
+
+          }
+          permutedResults.push(tempArray)
+        }
+        //permutate function ends here
+
+        for (var i =0;i<permutedResults.length;i++){
+
+          temp = printAnswer(permutedResults[i])
+
+          var tempSum = parseInt(3*temp[0])+parseInt(2*temp[1]);
+          if(parseInt(tempSum) <= parseInt(currentSum)){
+
+            if (prevSum == currentSum){
+
+              best.push(permutedResults);
+            }else{
+                prevSum = currentSum;
+                best = [];
+            }
+            currentSum = tempSum;
+            finalArray = permutedResults[i];
+            finalResults = temp;
+            finalB = temp[0];
+            finalC = temp[1];
+            checkIfTheAnswerChanged = true;
+          }
+          if (currentSum < fwmMargin){
+              checkTheForLoop = false;
+              break;
+          }
+
+        }
+        if(checkTheForLoop == false){
+          break;
+        }
+
+
+      }
+      return [prevSum,best]
+  }
+
+
+
+
+
+
   // Reading FILE and Setting a part starts here
-  function createLineReader(fileName){
+  function createLineReader(fileName,fileStartArr){
       var EM = require("events").EventEmitter
       var ev = new EM()
       var stream = require("fs").createReadStream(fileName)
@@ -230,7 +424,7 @@ function helloWorld(){
           for(var i=0; i<data.length; i++){
               if(data[i] == 10){ //\n new line
                   var line = data.slice(start,i)
-                  ev.emit("line", line)
+                  ev.emit("line", line,fileStartArr.push(line.toString().split(',')))
                   start = i+1;
               }
           }
@@ -243,10 +437,9 @@ function helloWorld(){
 
       stream.on("end",function(){
           if(null!=remainder){
-            console.log(remainder)
-            ev.emit("line",remainder);
+            ev.emit("line",remainder)
           }else{
-              printBest(fileArr);
+            ev.emit("array",fileStartArr)
           }
       })
 
@@ -256,200 +449,60 @@ function helloWorld(){
 
   //---------main---------------
 
-  var best = [];
-  lineReader = createLineReader("outputs.txt",fileStart);
-  lineReader.on("line",function(line){
+  var fileStartArray = [];
+  lineReader = createLineReader("outputs.txt",fileStartArray)
 
+  lineReader.on("line",function(line){
+    var arr = line.toString().split(',');
+  });
+  lineReader.on("array",function(array){
+    // console.log(array);
+    var prevSum = -1;
+    var best = []
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    var inputArray = [9,11,13,15, 14, 8,10,13];
+    var BaseUnit = 6
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    var tempConvertFromString = []
+    for(var i=0;i<array.length;i++){
+      var arr = [];
+      for(var j=0;j<array[i].length;j++){
+        arr.push(parseInt(array[i][j]))
+      }
+      tempConvertFromString.push(arr);
+    }
+
+    for (var i=0;i<tempConvertFromString.length;i++){
+        var tempResults = getBestResult(tempConvertFromString[i],inputArray,BaseUnit);
+        if (prevSum == -1 && tempResults[1].length > 0){
+          prevSum = tempResults[0];
+          best = tempResults[1];
+        }else if(prevSum == tempResults[0] && tempResults[1].length > 0){
+          for( var t =0; t< tempResults[1].length;t++){
+            best.push(tempResults[1][t]);
+          }
+        }else if(prevSum > tempResults[0] && tempResults[1].length > 0){
+            prevSum = tempResults[0];
+            best = tempResults[1];
+        }else{
+
+        }
+    }
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
+    console.log("best sum: "+ prevSum)
+    console.log("Number of Best combination:  " + best.length)
+    console.log('\n')
+    console.log("Best Results:");
+    printIt(best)
   });
   // Reading FILE and Setting a part ends here
 
   	// var inputArray = [8,10,12,14,16,15,9,11,13,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-    var checkIfTheAnswerChanged = false;
-    var best = [];
 
 
-    var startingValue = [0];
-    var inputArray = [8,10,12,14,16];
-  	var BaseUnit = inputArray.length;
-  	var fwmMargin = 0;
-  	var N = inputArray.length+1;
-  			var baseunitArray = [];
-			var BaseUnitTemp = [];
-				counter = 1;
-				iterator = 0;
-				previousBaseUnit = BaseUnit;
-				var checkBase = true
-				freq = 0;
-				while(counter <= N){
-
-					var k = 0
-					var temp = counter;
-					var deltaSum = 0
-					BaseUnitTemp = []
-					while(k<BaseUnit - 2*iterator){
-						BaseUnitTemp.push(inputArray[counter+k-1])
-						k = k + 1;
-						temp+=1
-						if(temp > N){
-						checkBase = false;
-						break;
-						}
-					}
-					if(checkBase){
-						baseunitArray.push(BaseUnitTemp);
-						counter = counter + k;
-						previousBaseUnit = previousBaseUnit- 2;
-					}
-					if(counter > N-1){
-						break;
-					}
-
-					k = 0;
-					BaseUnitTemp = []
-					BaseUnitTemp.push(inputArray[counter-1])
-					baseunitArray.push(BaseUnitTemp)
-					counter = counter + 1;
-
-					if(counter > N-1){
-						break;
-					}
-					iterator = iterator + 1;
-
-				}
-				// console.log(baseunitArray)
-				// End of Assignment of BaseUnit Arrays
-
-			var permutedBaseunits = []
-
-			for(var itr1=0;itr1<baseunitArray.length;itr1++){
-					permutedBaseunits.push(permute(baseunitArray[itr1]))
-			}
-			// console.log(permutedBaseunits)
-
-			var tempArray1 = [];
-      for (var idk=0;idk< startingValue.length;idk++){
-        tempArray1.push(startingValue[idk])
-      }
-      var first = inputArray[0] + startingValue[startingValue.length - 1];
-			for (var jtr1=0;jtr1<inputArray.length;jtr1++){
-				if(jtr1 === 0){
-					tempArray1.push(first);
-				}else{
-					tempArray1.push(first+inputArray[jtr1]);
-          first = first + inputArray[jtr1];
-
-				}
-
-			}
-
-			var temp = printAnswer(tempArray1);
-			var currentSum = parseInt(3*temp[0])+parseInt(2*temp[1])
-			var finalResults= temp;
-			var finalArray=inputArray;
-      var finalSummedArray = tempArray1;
-      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-      console.log("first combination")
-      console.log("First Sum:" + currentSum);
-      console.log("First answer:"+inputArray)
-			console.log("First Answer(summed):" + tempArray1);
-      console.log("First Nb:" + temp[0] );
-      console.log("First Nc:" + temp[1] );
-      console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-      var prevSum = currentSum;
-			var checkTheForLoop = true;
+    // function Starts here
 
 
-
-			for(var itr=0;itr<permutedBaseunits[0].length;itr++){
-				var permutedResultsTemp = [];
-				var startTemp  = [];
-				startTemp.push(permutedBaseunits[0][itr]);
-
-				for(var jtr=1;jtr<permutedBaseunits.length;jtr++){
-					if(permutedBaseunits[jtr].length > 1){
-						var tempStartBaseunit = []
-						for(var ktr=0;ktr<permutedBaseunits[jtr].length;ktr++){
-
-							for(var ltr=0;ltr<startTemp.length;ltr++){
-								var tempBaseunit = [];
-								for(var i=0;i<startTemp[ltr].length;i++){
-									tempBaseunit.push(startTemp[ltr][i]);
-								}
-								for(var i1=0;i1<permutedBaseunits[jtr][ktr].length;i1++){
-									tempBaseunit.push(permutedBaseunits[jtr][ktr][i1]);
-								}
-								tempStartBaseunit.push(tempBaseunit)
-							}
-						}
-						startTemp = tempStartBaseunit
-					}else{
-						var spacing = permutedBaseunits[jtr][0][0];
-						for(var ltr1=0;ltr1<startTemp.length;ltr1++){
-							startTemp[ltr1].push(spacing)
-						}
-
-					}
-
-				}
-				for(var ltr3=0;ltr3<startTemp.length;ltr3++){
-					permutedResultsTemp.push(startTemp[ltr3])
-				}
-				// console.log(permutedResultsTemp.length)
-				// console.log(startTemp)
-				var permutedResults = [];
-				// Permuted temp to Results
-				for (var itr2 = 0;itr2<permutedResultsTemp.length;itr2++){
-					var tempArray = new Array();
-          for (var idk=0;idk< startingValue.length;idk++){
-            tempArray.push(startingValue[idk])
-          }
-          var second = startingValue[startingValue.length - 1];
-					for (var jtr1=0;jtr1<permutedResultsTemp[0].length;jtr1++){
-						if(jtr === 0){
-							tempArray.push(second);
-						}else{
-							tempArray.push(second+permutedResultsTemp[itr2][jtr1]);
-              second  = second + permutedResultsTemp[itr2][jtr1];
-						}
-
-					}
-					permutedResults.push(tempArray)
-				}
-				//permutate function ends here
-
-				for (var i =0;i<permutedResults.length;i++){
-
-					temp = printAnswer(permutedResults[i])
-
-					var tempSum = parseInt(3*temp[0])+parseInt(2*temp[1]);
-					if(parseInt(tempSum) <= parseInt(currentSum)){
-
-            if (prevSum == currentSum){
-
-              best.push(permutedResults);
-            }else{
-                prevSum = currentSum;
-                best = [];
-            }
-						currentSum = tempSum;
-						finalArray = permutedResults[i];
-						finalResults = temp;
-            finalB = temp[0];
-            finalC = temp[1];
-            checkIfTheAnswerChanged = true;
-					}
-					if (currentSum < fwmMargin){
-							checkTheForLoop = false;
-							break;
-					}
-
-				}
-				if(checkTheForLoop == false){
-					break;
-				}
-
-
-			}
         // if (checkIfTheAnswerChanged){
         //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         //   console.log("Final Sum:" + currentSum);
@@ -461,12 +514,7 @@ function helloWorld(){
         //   console.log("same as the first combination")
         // }
 
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>");
-        console.log("best sum:"+prevSum)
-        console.log("Number of Best combination  " + best.length)
-        console.log('\n')
-        console.log("Best Results:");
-        printIt(best)
+
 
       return 'success';
 
