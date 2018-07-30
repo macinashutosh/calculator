@@ -341,7 +341,7 @@ function helloWorld(){
 					temp = printAnswer(permutedResults[i])
 
 					var tempSum = parseInt(3*temp[0])+parseInt(2*temp[1]);
-					if(tempSum < currentSum){
+					if(tempSum <= currentSum){
 						currentSum = tempSum;
 						finalArray = permutedResults[i];
 						finalResults = temp;
