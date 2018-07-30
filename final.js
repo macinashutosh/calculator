@@ -1,4 +1,3 @@
-
 function helloWorld(){
   	function factorial(number){
 			if(number<=1){
@@ -186,9 +185,9 @@ function helloWorld(){
 
 
   	// var inputArray = [8,10,12,14,16,15,9,11,13,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-  	var inputArray = [4,6,8,10,12, 6, 5,7,9];
-  	var BaseUnit = 5;
-  	var fwmMargin = 0;
+  	var inputArray = [8,10,12,14,16, 15, 9,11,13, 14, 8,10];
+  	var BaseUnit = 6;
+  	var fwmMargin = 20;
   	var N = inputArray.length+1;
   			var baseunitArray = [];
 			var BaseUnitTemp = [];
@@ -278,8 +277,16 @@ function helloWorld(){
 			var temp = printAnswer(tempArray1);
 			var currentSum = parseInt(3*temp[0])+parseInt(2*temp[1])
 			var finalResults= temp;
-			var finalArray=inputArray;
+			var finalArray=tempArray1;
 			var checkTheForLoop = true;
+      // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+      // console.log("first combination")
+      // console.log("First Sum:" + currentSum);
+      // console.log("First answer:"+inputArray)
+			// console.log("First Answer(summed):" + tempArray1);
+      // console.log("First Nb:" + temp[0] );
+      // console.log("First Nc:" + temp[1] );
+      // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
 
 
 			for(var itr=0;itr<permutedBaseunits[0].length;itr++){
