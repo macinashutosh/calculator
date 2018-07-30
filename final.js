@@ -186,7 +186,7 @@ function helloWorld(){
 
 
   	// var inputArray = [8,10,12,14,16,15,9,11,13,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-  	var inputArray = [8,10,12,14,16, 15, 9,11,13, 14, 8,10];
+  	var inputArray = [8,10,12,14,16,18, 15, 9,11,13,15, 14, 8,10, 13];
   	var BaseUnit = 6;
   	var fwmMargin = 20;
   	var N = inputArray.length+1;
@@ -280,14 +280,6 @@ function helloWorld(){
 			var finalResults= temp;
 			var finalArray=inputArray;
 			var checkTheForLoop = true;
-      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-      console.log("first combination")
-      console.log("First Sum:" + currentSum);
-      console.log("First answer:"+inputArray)
-			console.log("First Answer(summed):" + tempArray1);
-      console.log("First Nb:" + temp[0] );
-      console.log("First Nc:" + temp[1] );
-      console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
 
 
 			for(var itr=0;itr<permutedBaseunits[0].length;itr++){
@@ -349,7 +341,7 @@ function helloWorld(){
 					temp = printAnswer(permutedResults[i])
 
 					var tempSum = parseInt(3*temp[0])+parseInt(2*temp[1]);
-					if(tempSum <= currentSum){
+					if(tempSum < currentSum){
 						currentSum = tempSum;
 						finalArray = permutedResults[i];
 						finalResults = temp;

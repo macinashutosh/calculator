@@ -375,7 +375,7 @@ function helloWorld(){
 
             if (prevSum == currentSum){
 
-              best.push(permutedResults);
+              best.push(permutedResults[i]);
             }else{
                 prevSum = currentSum;
                 best = [];
@@ -460,7 +460,7 @@ function helloWorld(){
     var prevSum = -1;
     var best = []
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    var inputArray = [9,11,13,15, 14, 8,10,13];
+    var inputArray = [9,11,13,15,17,19, 14, 8,10,12,14, 13, 9,11];
     var BaseUnit = 6
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     var tempConvertFromString = []

@@ -187,8 +187,8 @@ function helloWorld(){
 
   	// var inputArray = [8,10,12,14,16,15,9,11,13,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
     var checkIfTheAnswerChanged = false;
-    var startingValue = [0,10,26,38,56,70,78];
-    var inputArray = [9,11,13,15, 14];
+    var startingValue =  [0,12,26,48,58,78,86,102,120,135,154,169,182,193,210,219,233];
+    var inputArray = [8,10,12,14, 13, 9,11];
   	var BaseUnit = 4;
   	var fwmMargin = 0;
   	var N = inputArray.length+1;
