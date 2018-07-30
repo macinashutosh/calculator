@@ -186,9 +186,9 @@ function helloWorld(){
 
 
   	// var inputArray = [8,10,12,14,16,15,9,11,13,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-  	var inputArray = [8,10,12,14,16,18, 15, 9,11,13,15, 14, 8,10, 13];
-  	var BaseUnit = 6;
-  	var fwmMargin = 20;
+  	var inputArray = [4,6,8,10,12, 6, 5,7,9];
+  	var BaseUnit = 5;
+  	var fwmMargin = 0;
   	var N = inputArray.length+1;
   			var baseunitArray = [];
 			var BaseUnitTemp = [];
