@@ -1,0 +1,25 @@
+{
+  "name": "calculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "calculate.js",
+  "dependencies": {
+    "async": "^2.6.1",
+    "lazy": "^1.0.11",
+    "line-reader": "^0.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/macinashutosh/calculator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/macinashutosh/calculator/issues"
+  },
+  "homepage": "https://github.com/macinashutosh/calculator#readme"
+}

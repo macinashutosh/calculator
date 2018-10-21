@@ -1,8 +1,7 @@
 var fs = require('fs');
 var em = require("events");
 var async = require('async');
-var EM = em.EventEmitter;
-var ev = new EM();
+
 function factorial(number){
     if(number<=1){
       return 1;
@@ -218,6 +217,8 @@ function checkFeasibility(differenceArr){ // Returns Nb and Nc with respect to t
 function createLineReader(fileName,permuteArray,txtFile,txtFile1,eventName){
     var stream = new fs.createReadStream(fileName)
     var remainder = null;
+    var EM = em.EventEmitter;
+    var ev = new EM();
     // console.log(stream)
     stream.on("data",function(data){
         if(remainder != null){//append newly received data chunk
