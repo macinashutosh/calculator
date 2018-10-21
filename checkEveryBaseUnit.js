@@ -441,7 +441,7 @@ function helloWorld(){
           }else{
             ev.emit("array",fileStartArr)
           }
-      })
+      });
 
       return ev
   }
@@ -450,7 +450,7 @@ function helloWorld(){
   //---------main---------------
 
   var fileStartArray = [];
-  lineReader = createLineReader("outputs.txt",fileStartArray)
+  lineReader = createLineReader("outputs.txt",fileStartArray);
 
   lineReader.on("line",function(line){
     var arr = line.toString().split(',');

@@ -10,6 +10,29 @@ function helloWorld(){
 			var denominator = factorial(2)*factorial(Number - 2)
 			return numerator/denominator;
 	}
+  
+  function permute(permutation) {
+    var length = permutation.length,
+        result = [permutation.slice()],
+        c = new Array(length).fill(0),
+        i = 1, k, p;
+
+    while (i < length) {
+      if (c[i] < i) {
+        k = i % 2 && c[i];
+        p = permutation[i];
+        permutation[i] = permutation[k];
+        permutation[k] = p;
+        ++c[i];
+        i = 1;
+        result.push(permutation.slice());
+      } else {
+        c[i] = 0;
+        ++i;
+      }
+    }
+    return result;
+  }
 
 
   var finalB = 0;
@@ -234,28 +257,7 @@ function helloWorld(){
 				}
 				// console.log(baseunitArray)
 				// End of Assignment of BaseUnit Arrays
-			function permute(permutation) {
-			  var length = permutation.length,
-			      result = [permutation.slice()],
-			      c = new Array(length).fill(0),
-			      i = 1, k, p;
 
-			  while (i < length) {
-			    if (c[i] < i) {
-			      k = i % 2 && c[i];
-			      p = permutation[i];
-			      permutation[i] = permutation[k];
-			      permutation[k] = p;
-			      ++c[i];
-			      i = 1;
-			      result.push(permutation.slice());
-			    } else {
-			      c[i] = 0;
-			      ++i;
-			    }
-			  }
-			  return result;
-			}
 			var permutedBaseunits = []
 
 			for(var itr1=0;itr1<baseunitArray.length;itr1++){
