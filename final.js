@@ -1,40 +1,38 @@
-function helloWorld(){
-  	function factorial(number){
-			if(number<=1){
-				return 1;
-			}
-			return number * factorial(number - 1)
-	}
-	function getCombination(Number){
-			var numerator = factorial(Number)
-			var denominator = factorial(2)*factorial(Number - 2)
-			return numerator/denominator;
-	}
-  
-  function permute(permutation) {
-    var length = permutation.length,
-        result = [permutation.slice()],
-        c = new Array(length).fill(0),
-        i = 1, k, p;
-
-    while (i < length) {
-      if (c[i] < i) {
-        k = i % 2 && c[i];
-        p = permutation[i];
-        permutation[i] = permutation[k];
-        permutation[k] = p;
-        ++c[i];
-        i = 1;
-        result.push(permutation.slice());
-      } else {
-        c[i] = 0;
-        ++i;
-      }
+function factorial(number){
+    if(number<=1){
+      return 1;
     }
-    return result;
+    return number * factorial(number - 1)
+}
+function getCombination(Number){
+    var numerator = factorial(Number)
+    var denominator = factorial(2)*factorial(Number - 2)
+    return numerator/denominator;
+}
+
+function permute(permutation) {
+  var length = permutation.length,
+      result = [permutation.slice()],
+      c = new Array(length).fill(0),
+      i = 1, k, p;
+
+  while (i < length) {
+    if (c[i] < i) {
+      k = i % 2 && c[i];
+      p = permutation[i];
+      permutation[i] = permutation[k];
+      permutation[k] = p;
+      ++c[i];
+      i = 1;
+      result.push(permutation.slice());
+    } else {
+      c[i] = 0;
+      ++i;
+    }
   }
-
-
+  return result;
+}
+function helloWorld(){
   var finalB = 0;
   var finalC = 0;
 		//check Feasibility is the main Function for the algo
@@ -210,9 +208,9 @@ function helloWorld(){
   	// var inputArray = [8,10,12,14,16,15,9,11,13,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
   	var inputArray = [8,10,12,14,16, 15, 9,11,13, 14, 8,10];
   	var BaseUnit = 6;
-  	var fwmMargin = 20;
+  	var fwmMargin = 0;
   	var N = inputArray.length+1;
-  			var baseunitArray = [];
+  		var baseunitArray = [];
 			var BaseUnitTemp = [];
 				counter = 1;
 				iterator = 0;
