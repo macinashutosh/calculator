@@ -438,4 +438,4 @@ function calculateAnswer(inputArray){
   console.log("Final Summed Assignment ==> " + finalSumArray);
 }
 
-calculateAnswer([2,4,6,8,10, 5, 3,5,7, 4, 3])
+calculateAnswer([2,4,6,8,10,12, 5, 3,5,7,9, 4, 3])
